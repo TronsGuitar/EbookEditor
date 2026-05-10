@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Digital Study - Book Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Literata:ital,wght@0,400;0,600;0,700;1,400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "surface-container-low": "#f5f3ee",
+                        "on-error-container": "#93000a",
+                        "background": "#fbf9f4",
+                        "tertiary-fixed-dim": "#b8c8e0",
+                        "outline": "#75777b",
+                        "on-surface": "#1b1c19",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#bcc7dd",
+                        "on-secondary-container": "#586377",
+                        "outline-variant": "#c5c6cb",
+                        "surface-container-highest": "#e4e2dd",
+                        "inverse-primary": "#c1c7cf",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#39485c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e4e2dd",
+                        "inverse-surface": "#30312e",
+                        "primary-fixed": "#dde3eb",
+                        "primary-container": "#2d3339",
+                        "surface-dim": "#dbdad5",
+                        "tertiary": "#0e1e30",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#111c2c",
+                        "secondary-fixed": "#d8e3fa",
+                        "tertiary-fixed": "#d4e4fc",
+                        "surface-container-high": "#eae8e3",
+                        "on-surface-variant": "#44474a",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-primary-container": "#959ba2",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#d5e0f7",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "primary": "#181e24",
+                        "surface-tint": "#595f66",
+                        "secondary": "#545f72",
+                        "on-primary-fixed-variant": "#41474e",
+                        "on-primary-fixed": "#161c22",
+                        "on-background": "#1b1c19",
+                        "surface": "#fbf9f4",
+                        "on-tertiary-container": "#8c9bb2",
+                        "surface-container": "#f0eee9",
+                        "surface-bright": "#fbf9f4",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#243346"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "unit-base": "8px",
+                        "gutter": "16px",
+                        "editor-max-width": "800px",
+                        "margin-side": "24px"
+                    },
+                    "fontFamily": {
+                        "ui-body-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "label-lg": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "editor-body": ["Literata"],
+                        "headline-md": ["Manrope"],
+                        "display-lg": ["Literata"]
+                    },
+                    "fontSize": {
+                        "ui-body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "editor-body": ["20px", {"lineHeight": "32px", "letterSpacing": "0.2px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-ui-body-md">
+<!-- Sidebar Navigation Drawer -->
+<aside class="h-screen w-sidebar-width fixed left-0 top-0 bg-surface-container flex flex-col py-gutter gap-2 z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg text-primary">Manuscript Central</h1>
+<p class="font-label-lg text-label-lg text-on-surface-variant">Lead Editor</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 py-3 px-6 mx-2 text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span>Library</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-6 mx-2 text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span>Editor</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-6 bg-secondary-container text-on-secondary-container rounded-full mx-2 transition-all font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-6 mx-2 text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Archive</span>
+</a>
+</nav>
+<div class="mt-auto px-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Author Portrait</p>
+<p class="text-xs text-on-surface-variant">Digital Study Pro</p>
+</div>
+</div>
+</aside>
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky bg-background flex items-center justify-between px-margin-side h-20 z-30 md:pl-[304px]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="menu_open">menu_open</span>
+<h2 class="font-headline-md text-headline-md text-primary">The Digital Study</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 border border-outline text-primary font-label-lg text-label-lg rounded hover:bg-surface-container-high transition-colors active:scale-95 duration-100">
+                Cancel
+            </button>
+<button class="px-6 py-2 bg-primary text-on-primary font-label-lg text-label-lg rounded hover:bg-primary-container transition-colors active:scale-95 duration-100">
+                Publish
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="md:ml-sidebar-width p-margin-side min-h-[calc(100vh-80px)]">
+<div class="max-w-6xl mx-auto">
+<header class="mb-12">
+<h3 class="font-display-lg text-display-lg text-on-surface mb-2">Book Settings</h3>
+<p class="text-on-surface-variant font-ui-body-md">Configure the metadata and appearance for your current manuscript.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Metadata Fields -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<div class="group">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-2">Book Title</label>
+<input class="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 font-editor-body text-xl transition-colors" placeholder="Enter title..." type="text" value="The Whispering Gallery"/>
+</div>
+<div class="group">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-2">Author Name</label>
+<input class="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 font-ui-body-md transition-colors" placeholder="Pen name or real name..." type="text" value="Elena Vance"/>
+</div>
+<div class="group">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-2">Genre</label>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-primary text-on-primary text-label-sm font-label-sm rounded-lg">Mystery</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-label-sm font-label-sm rounded-lg">Thriller</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-label-sm font-label-sm rounded-lg">Noir</span>
+</div>
+<input class="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 font-ui-body-md transition-colors" placeholder="Add genre tags..." type="text"/>
+</div>
+<div class="group">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-2">Synopsis / Description</label>
+<textarea class="w-full bg-surface-container-low border-0 border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 font-editor-body text-lg leading-relaxed transition-colors" placeholder="Describe your masterpiece..." rows="8">A cold case in a quiet coastal town resurfaces when an old manuscript is found hidden within the walls of a derelict lighthouse. Elena Vance must piece together the fragments of a lost life before the tides wash away the evidence for good.</textarea>
+</div>
+<div class="pt-4 flex gap-4">
+<button class="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded font-label-lg text-label-lg shadow-sm hover:shadow-md active:translate-x-1 transition-all">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                            Save Changes
+                        </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-error-container text-on-error-container rounded font-label-lg text-label-lg hover:bg-error hover:text-on-error transition-all">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+                            Archive Manuscript
+                        </button>
+</div>
+</div>
+<!-- Right Column: Cover Upload & Preview -->
+<div class="lg:col-span-5">
+<div class="sticky top-28">
+<label class="block font-label-lg text-label-lg text-on-surface-variant mb-4">Book Cover Preview</label>
+<div class="relative group aspect-[2/3] w-full max-w-[400px] mx-auto bg-surface-container-highest border-2 border-dashed border-outline-variant rounded-xl overflow-hidden flex flex-col items-center justify-center text-center p-8 transition-all hover:border-primary">
+<img alt="Book Cover Preview" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-40 transition-opacity" data-alt="A cinematic and moody book cover design featuring a silhouette of a solitary lighthouse against a dark, stormy coastal sky at dusk. The overall aesthetic is refined and minimalist, with deep slate blues and charcoal grays dominating the palette. Soft, diffused moonlight creates a high-contrast, dramatic atmosphere suitable for a mystery novel. The visual style is evocative of professional digital publishing and high-end editorial design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQluhkJoyfoHoBrraPHcdimB0F_SUUfXgbWvBTg-HL_MyBgMQluSTx0D1OZ6d5x3QVjGDAABHPDjb43E-WexjfMeSVcgK5hy3e8H85ZuZq9tyo8HH2RtrL5hXHajUaF7MN3CTD6rrKfykYZplbGdmn2m3E4odcdto5kPdo1WXchQlYA7j6ALn6S_KSwG0UEFr6ng2UAPUU2SSPFx1xZh-nTsfG8s04NNkfAsDuTAnHjve71cmytPGrR_HmbV_7OFdpSo-nzNUopE8"/>
+<div class="relative z-10 flex flex-col items-center gap-4 text-on-surface">
+<span class="material-symbols-outlined text-4xl" data-icon="cloud_upload">cloud_upload</span>
+<div class="space-y-1">
+<p class="font-headline-md text-headline-md">Upload New Cover</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Recommended size: 1600 x 2400px (JPG or PNG)</p>
+</div>
+<button class="mt-4 px-6 py-2 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:scale-105 transition-transform active:scale-95">
+                                    Browse Files
+                                </button>
+</div>
+</div>
+<div class="mt-8 p-6 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<h4 class="font-label-lg text-label-lg text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="info">info</span>
+                                Cover Guidelines
+                            </h4>
+<ul class="text-xs text-on-surface-variant space-y-3 font-ui-body-md">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[14px] mt-0.5 text-primary" data-icon="check_circle">check_circle</span>
+<span>High resolution (300 DPI) for print-ready quality.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[14px] mt-0.5 text-primary" data-icon="check_circle">check_circle</span>
+<span>Typography should be legible even at thumbnail sizes.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[14px] mt-0.5 text-primary" data-icon="check_circle">check_circle</span>
+<span>Avoid placing critical elements near the 5mm bleed edge.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 md:hidden px-4 bg-surface-container-low border-t border-outline-variant shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="edit_document">edit_document</span>
+<span class="font-label-sm text-label-sm">Drafts</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span class="font-label-sm text-label-sm">Export</span>
+</a>
+</footer>
+</body></html>

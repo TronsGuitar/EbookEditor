@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Literata:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "surface-container-low": "#f5f3ee",
+                        "on-error-container": "#93000a",
+                        "background": "#fbf9f4",
+                        "tertiary-fixed-dim": "#b8c8e0",
+                        "outline": "#75777b",
+                        "on-surface": "#1b1c19",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#bcc7dd",
+                        "on-secondary-container": "#586377",
+                        "outline-variant": "#c5c6cb",
+                        "surface-container-highest": "#e4e2dd",
+                        "inverse-primary": "#c1c7cf",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#39485c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e4e2dd",
+                        "inverse-surface": "#30312e",
+                        "primary-fixed": "#dde3eb",
+                        "primary-container": "#2d3339",
+                        "surface-dim": "#dbdad5",
+                        "tertiary": "#0e1e30",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#111c2c",
+                        "secondary-fixed": "#d8e3fa",
+                        "tertiary-fixed": "#d4e4fc",
+                        "surface-container-high": "#eae8e3",
+                        "on-surface-variant": "#44474a",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-primary-container": "#959ba2",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#d5e0f7",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#0d1c2e",
+                        "primary": "#181e24",
+                        "surface-tint": "#595f66",
+                        "secondary": "#545f72",
+                        "on-primary-fixed-variant": "#41474e",
+                        "on-primary-fixed": "#161c22",
+                        "on-background": "#1b1c19",
+                        "surface": "#fbf9f4",
+                        "on-tertiary-container": "#8c9bb2",
+                        "surface-container": "#f0eee9",
+                        "surface-bright": "#fbf9f4",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#243346",
+                        "gold-accent": "#f2ca50",
+                        "deep-charcoal": "#1a1c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "unit-base": "8px",
+                        "gutter": "16px",
+                        "editor-max-width": "800px",
+                        "margin-side": "24px"
+                    },
+                    "fontFamily": {
+                        "ui-body-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "label-lg": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "editor-body": ["Literata"],
+                        "headline-md": ["Manrope"],
+                        "display-lg": ["Literata"]
+                    },
+                    "fontSize": {
+                        "ui-body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "editor-body": ["20px", {"lineHeight": "32px", "letterSpacing": "0.2px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #fbf9f4;
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4e2dd;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c5c6cb;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-ui-body-md text-on-background antialiased flex h-screen overflow-hidden">
+<!-- Navigation Drawer (Rail for Tablet/Desktop) -->
+<nav class="h-screen w-sidebar-width fixed left-0 top-0 flex flex-col py-gutter gap-2 bg-surface-container border-r border-outline-variant/30 z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">The Digital Study</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Manuscript Central • Lead Editor</p>
+</div>
+<div class="flex flex-col gap-1 px-2">
+<!-- Library -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all rounded-full group" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-lg text-label-lg">Library</span>
+</a>
+<!-- Editor (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-full mx-2 group" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-lg text-label-lg">Editor</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all rounded-full group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<!-- Archive -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all rounded-full group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-lg text-label-lg">Archive</span>
+</a>
+</div>
+<div class="mt-auto px-6 py-4 flex items-center gap-3 border-t border-outline-variant/20">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Author Portrait</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Active Workspace</p>
+</div>
+</div>
+</nav>
+<!-- Main Content Shell -->
+<main class="flex-1 md:ml-sidebar-width flex flex-col md:flex-row h-full overflow-hidden">
+<!-- Multi-Pane Layout: Chapter Outline (Left Pane) -->
+<aside class="w-full md:w-80 flex-shrink-0 bg-deep-charcoal border-r border-white/5 flex flex-col h-full">
+<div class="p-6 border-b border-white/5 flex items-center justify-between">
+<h2 class="font-display-lg text-[20px] font-semibold text-white/90">Chapter Outline</h2>
+<button class="p-2 hover:bg-white/10 rounded-full transition-colors text-white/60">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto py-4">
+<div class="space-y-1">
+<!-- Chapter Item (Active) -->
+<div class="flex items-center gap-3 px-6 py-4 relative bg-white/5 border-l-4 border-gold-accent">
+<span class="font-label-sm text-label-sm text-gold-accent">01</span>
+<div class="flex-1">
+<p class="font-label-lg text-label-lg text-white">The Threshold of Silence</p>
+<p class="font-label-sm text-label-sm text-white/40">1,240 words • Drafted</p>
+</div>
+</div>
+<!-- Chapter Item -->
+<div class="flex items-center gap-3 px-6 py-4 hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="font-label-sm text-label-sm text-white/40 group-hover:text-white/60">02</span>
+<div class="flex-1">
+<p class="font-label-lg text-label-lg text-white/70 group-hover:text-white">Echoes in the Archive</p>
+<p class="font-label-sm text-label-sm text-white/30">3,450 words • Editing</p>
+</div>
+</div>
+<!-- Chapter Item -->
+<div class="flex items-center gap-3 px-6 py-4 hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="font-label-sm text-label-sm text-white/40 group-hover:text-white/60">03</span>
+<div class="flex-1">
+<p class="font-label-lg text-label-lg text-white/70 group-hover:text-white">The Inkwell's Secret</p>
+<p class="font-label-sm text-label-sm text-white/30">800 words • Outline</p>
+</div>
+</div>
+<!-- Chapter Item -->
+<div class="flex items-center gap-3 px-6 py-4 hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="font-label-sm text-label-sm text-white/40 group-hover:text-white/60">04</span>
+<div class="flex-1">
+<p class="font-label-lg text-label-lg text-white/70 group-hover:text-white">Midnight Correspondence</p>
+<p class="font-label-sm text-label-sm text-white/30">0 words • Unstarted</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-black/20 mt-auto border-t border-white/5">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-white/40">Novel Progress</span>
+<span class="font-label-sm text-label-sm text-white/80">24%</span>
+</div>
+<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+<div class="bg-gold-accent h-full w-[24%]"></div>
+</div>
+</div>
+</aside>
+<!-- Multi-Pane Layout: Distraction-Free Editor (Center/Right Pane) -->
+<section class="flex-1 flex flex-col bg-background relative overflow-hidden">
+<!-- Minimal Contextual Toolbar -->
+<header class="h-20 w-full flex items-center justify-between px-margin-side sticky top-0 bg-background/80 backdrop-blur-md z-30">
+<div class="flex items-center gap-6">
+<button class="md:hidden p-2 hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="flex items-center gap-1 bg-surface-container px-4 py-2 rounded-lg border border-outline-variant/20">
+<button class="p-1 hover:text-primary text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="format_bold">format_bold</span>
+</button>
+<button class="p-1 hover:text-primary text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="format_italic">format_italic</span>
+</button>
+<div class="w-[1px] h-4 bg-outline-variant mx-2"></div>
+<button class="p-1 hover:text-primary text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="format_list_bulleted">format_list_bulleted</span>
+</button>
+<button class="p-1 hover:text-primary text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="format_quote">format_quote</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant hidden lg:inline">Saved just now</span>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors" title="Help">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg text-label-lg active:scale-95 transition-all">
+                    Publish
+                </button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<!-- The Editor Canvas -->
+<div class="flex-1 overflow-y-auto px-margin-side pt-12 pb-32 flex justify-center">
+<article class="w-full max-w-[800px] bg-surface-container-lowest p-12 md:p-20 shadow-sm rounded-lg min-h-screen">
+<header class="mb-12">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4 leading-tight">The Threshold of Silence</h1>
+<div class="flex items-center gap-4 text-on-surface-variant opacity-60">
+<span class="font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span> Oct 12, 2023
+                        </span>
+<span class="font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="history_edu">history_edu</span> 1,240 Words
+                        </span>
+</div>
+</header>
+<div class="font-editor-body text-editor-body text-on-surface selection:bg-secondary-container leading-relaxed space-y-8">
+<p>
+                        The dust motes danced in the late afternoon sun, drifting through the tall, arched windows of the Great Library. Here, at the edge of the known world, the silence was more than a lack of sound; it was a physical presence, heavy and ancient. It sat upon the shoulders of the scholars like a leaden cloak, urging them to tread softly and speak only in the hushed tones of prayer.
+                    </p>
+<p>
+                        Elias ran a finger along the spine of a leather-bound volume, the texture rough and reassuring against his skin. The smell of old parchment and beeswax hung thick in the air—the scent of a thousand years of accumulated thought. He had spent his entire life within these walls, yet today, the familiar weight of the atmosphere felt different. It felt like a warning.
+                    </p>
+<p>
+<span class="bg-secondary-container/30 border-l-2 border-secondary px-4 py-2 italic block my-6">
+                            "Do not seek the silence that does not speak back," his mentor had once whispered, before vanishing into the stacks for the final time.
+                        </span>
+</p>
+<p>
+                        He pulled the book from the shelf. It had no title on the spine, only a faint, embossed seal of a key crossed with a quill. As the cover creaked open, a single slip of vellum fell to the floor. It was blank, or so it seemed at first glance. But as the sun hit it at just the right angle, delicate silver threads began to shimmer on the surface, forming the outline of a map he had never seen before.
+                    </p>
+<p>
+                        The map didn't show cities or rivers. It showed paths through the very silence he had been taught to respect. One path led directly to the archives below the foundation—a place forbidden to all but the High Curator.
+                    </p>
+<div class="flex justify-center py-10">
+<div class="w-24 h-[1px] bg-outline-variant"></div>
+</div>
+<p>
+                        Elias tucked the vellum into his sleeve. His heart hammered against his ribs—a frantic, living thing in this mausoleum of dead ideas. For the first time in his thirty years, he felt the urge to leave. Not to the town beyond the walls, but deeper into the heart of the library's mysteries.
+                    </p>
+</div>
+</article>
+</div>
+<!-- Floating Formatting Bar (Contextual) -->
+<div class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-tertiary text-on-tertiary px-6 py-3 rounded-full flex items-center gap-6 shadow-xl z-50">
+<div class="flex items-center gap-4">
+<button class="hover:text-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="undo">undo</span>
+</button>
+<button class="hover:text-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="redo">redo</span>
+</button>
+</div>
+<div class="w-[1px] h-6 bg-white/20"></div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 hover:text-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="font-label-lg text-label-lg">Focus Mode</span>
+</button>
+<button class="flex items-center gap-2 hover:text-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-lg text-label-lg">Notes</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Focus Drawer (Optional Metadata Pane) -->
+<aside class="hidden xl:flex w-72 bg-surface-container border-l border-outline-variant/30 flex-col h-full">
+<div class="p-6 border-b border-outline-variant/20">
+<h3 class="font-label-lg text-label-lg text-on-surface uppercase tracking-widest">Metadata</h3>
+</div>
+<div class="p-6 space-y-8">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">Genre Tags</label>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface border border-outline-variant px-3 py-1 text-[11px] font-semibold rounded-lg uppercase">Fantasy</span>
+<span class="bg-surface border border-outline-variant px-3 py-1 text-[11px] font-semibold rounded-lg uppercase">Mystery</span>
+<span class="bg-surface border border-outline-variant px-3 py-1 text-[11px] font-semibold rounded-lg uppercase">Academic</span>
+</div>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">Writing Target</label>
+<p class="font-ui-body-md text-ui-body-md text-on-surface">5,000 / 50,000 words</p>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full w-[10%]"></div>
+</div>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-4 block">Key Characters</label>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-xs">EL</div>
+<span class="font-label-lg text-label-lg">Elias Thorne</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold text-xs">MA</div>
+<span class="font-label-lg text-label-lg">Master Alistair</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-6 bg-surface-variant/50">
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">"A quiet study is the most fertile ground for loud ideas."</p>
+</div>
+</aside>
+</main>
+<!-- Bottom Nav (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 md:hidden bg-surface-container-low border-t border-outline-variant shadow-sm px-4">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="edit_document">edit_document</span>
+<span class="font-label-sm text-label-sm">Drafts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="sticky_note_2">sticky_note_2</span>
+<span class="font-label-sm text-label-sm">Notes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span class="font-label-sm text-label-sm">Export</span>
+</a>
+</nav>
+</body></html>

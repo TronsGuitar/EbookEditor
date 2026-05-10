@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Digital Study - Export</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Literata:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "surface-container-low": "#f5f3ee",
+                    "on-error-container": "#93000a",
+                    "background": "#fbf9f4",
+                    "tertiary-fixed-dim": "#b8c8e0",
+                    "outline": "#75777b",
+                    "on-surface": "#1b1c19",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#bcc7dd",
+                    "on-secondary-container": "#586377",
+                    "outline-variant": "#c5c6cb",
+                    "surface-container-highest": "#e4e2dd",
+                    "inverse-primary": "#c1c7cf",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#39485c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e4e2dd",
+                    "inverse-surface": "#30312e",
+                    "primary-fixed": "#dde3eb",
+                    "primary-container": "#2d3339",
+                    "surface-dim": "#dbdad5",
+                    "tertiary": "#0e1e30",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#111c2c",
+                    "secondary-fixed": "#d8e3fa",
+                    "tertiary-fixed": "#d4e4fc",
+                    "surface-container-high": "#eae8e3",
+                    "on-surface-variant": "#44474a",
+                    "inverse-on-surface": "#f2f1ec",
+                    "on-primary-container": "#959ba2",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#d5e0f7",
+                    "primary-fixed-dim": "#c1c7cf",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "primary": "#181e24",
+                    "surface-tint": "#595f66",
+                    "secondary": "#545f72",
+                    "on-primary-fixed-variant": "#41474e",
+                    "on-primary-fixed": "#161c22",
+                    "on-background": "#1b1c19",
+                    "surface": "#fbf9f4",
+                    "on-tertiary-container": "#8c9bb2",
+                    "surface-container": "#f0eee9",
+                    "surface-bright": "#fbf9f4",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#243346"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "unit-base": "8px",
+                    "gutter": "16px",
+                    "editor-max-width": "800px",
+                    "margin-side": "24px"
+            },
+            "fontFamily": {
+                    "ui-body-md": ["Manrope"],
+                    "label-sm": ["Manrope"],
+                    "label-lg": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "editor-body": ["Literata"],
+                    "headline-md": ["Manrope"],
+                    "display-lg": ["Literata"]
+            },
+            "fontSize": {
+                    "ui-body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "editor-body": ["20px", {"lineHeight": "32px", "letterSpacing": "0.2px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tablet-frame {
+            box-shadow: 0 0 0 12px #181e24, 0 0 0 14px #44474a, 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-ui-body-md overflow-hidden">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col py-gutter gap-2 w-sidebar-width h-screen fixed left-0 top-0 bg-surface-container z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">menu_open</span>
+<h1 class="font-headline-lg text-headline-lg text-primary">Manuscript Central</h1>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all active:translate-x-1 duration-200 rounded-full font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span>Library</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all active:translate-x-1 duration-200 rounded-full font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span>Editor</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all active:translate-x-1 duration-200 rounded-full font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all active:translate-x-1 duration-200 rounded-full font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Archive</span>
+</a>
+</nav>
+<div class="mt-auto px-6 py-4 flex items-center gap-4">
+<img alt="Author Portrait" class="w-10 h-10 rounded-full bg-secondary-fixed" data-alt="A professional, close-up portrait of a thoughtful author in a sunlit home library. The lighting is soft and warm, highlighting the textures of wooden bookshelves in the background. The aesthetic is clean and intellectual, using a muted color palette of cream, charcoal, and soft oak, perfectly aligned with a premium digital study environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgzukmeLmYf2KsSWP7SZspy8-1Rsk7ui6lRMh3jezzwhZ1Whb0Q-mLcAcrkOc8nJmvs6lyLWjh2r-r8giHvmoXqNJ1e_NAeRg3dyenDvI-PHLr_1_JAwO9_jKCE5SAGnOleiQ1q4AF92uoVpAVo8HOM8-XBqS-7yftPlw2vCFbm-K4gWCMruJkTUELkriih5At4C3kaLhFincvgTJH_4TPL0UGfF6ql-EtH0WiVjGhti6UTzh239iFRuvGUmpTPjs-5s-GtnlOa6s"/>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Manuscript Central</p>
+<p class="text-xs text-on-surface-variant">Lead Editor</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-sidebar-width h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="flex items-center justify-between px-margin-side h-20 w-full bg-background sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary font-bold">menu_open</span>
+<span class="font-headline-md text-headline-md text-primary">The Digital Study</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-full border border-outline text-on-surface font-label-lg text-label-lg hover:bg-surface-container-high transition-colors active:scale-95 duration-100">
+                    Preview
+                </button>
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-lg text-label-lg hover:bg-primary-container transition-colors active:scale-95 duration-100">
+                    Publish
+                </button>
+</div>
+</header>
+<!-- Split View Layout -->
+<div class="flex-1 flex flex-col md:flex-row overflow-hidden bg-background">
+<!-- Left Pane: Live Preview -->
+<section class="flex-1 flex flex-col items-center justify-center p-8 bg-surface-container-low overflow-y-auto">
+<div class="w-full max-w-2xl flex flex-col items-center">
+<div class="mb-6 text-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Live Preview</h2>
+<p class="text-on-surface-variant font-label-sm uppercase tracking-widest mt-1">Tablet Layout Representation</p>
+</div>
+<!-- Tablet Frame Container -->
+<div class="tablet-frame bg-surface-container-lowest w-[380px] h-[520px] rounded-[32px] relative overflow-hidden flex flex-col border-[1px] border-outline-variant/30">
+<div class="p-10 flex-1 flex flex-col font-editor-body text-editor-body text-on-surface leading-relaxed">
+<h3 class="font-display-lg text-display-lg mb-8 leading-tight italic">Chapter One: The Quiet Echo</h3>
+<p class="mb-6 first-letter:text-5xl first-letter:float-left first-letter:mr-3 first-letter:font-display-lg">The rain didn't fall so much as it settled, a heavy dampness that clung to the stone walls of the old library. Inside, the scent of parched paper and beeswax provided a familiar sanctuary for those who sought silence.</p>
+<p>Elias moved between the stacks, his fingers grazing the spines of leather-bound volumes that had outlived their creators by centuries. He wasn't looking for a story; he was looking for a ghost.</p>
+</div>
+<div class="h-12 border-t border-outline-variant/20 flex items-center justify-center px-8 text-xs text-on-surface-variant font-label-sm">
+                            Page 1 of 342 • Manuscript Central
+                        </div>
+</div>
+<div class="mt-8 flex gap-4">
+<button class="p-2 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="px-4 py-2 font-label-lg text-on-surface">Layout: Academic Serif</span>
+<button class="p-2 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Pane: Export Options -->
+<section class="w-full md:w-[420px] bg-surface-container p-gutter md:p-10 flex flex-col gap-8 border-l border-outline-variant/20 overflow-y-auto">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Export Options</h2>
+<p class="text-on-surface-variant text-label-lg">Select your final delivery format and configuration.</p>
+</div>
+<!-- Format Selection Grid -->
+<div class="grid grid-cols-1 gap-4">
+<label class="group relative flex items-center p-4 bg-surface-container-lowest border-2 border-primary rounded-xl cursor-pointer transition-all hover:shadow-sm">
+<input checked="" class="hidden" name="format" type="radio" value="epub"/>
+<div class="flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+<div>
+<p class="font-label-lg text-on-surface">EPUB eBook</p>
+<p class="text-xs text-on-surface-variant">Recommended for Kindle &amp; Apple Books</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</label>
+<label class="group relative flex items-center p-4 bg-surface-container-lowest border-2 border-transparent hover:border-outline-variant rounded-xl cursor-pointer transition-all">
+<input class="hidden" name="format" type="radio" value="pdf"/>
+<div class="flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">picture_as_pdf</span>
+</div>
+<div>
+<p class="font-label-lg text-on-surface">Print-Ready PDF</p>
+<p class="text-xs text-on-surface-variant">High-resolution for physical publishing</p>
+</div>
+</div>
+</label>
+<label class="group relative flex items-center p-4 bg-surface-container-lowest border-2 border-transparent hover:border-outline-variant rounded-xl cursor-pointer transition-all">
+<input class="hidden" name="format" type="radio" value="docx"/>
+<div class="flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">description</span>
+</div>
+<div>
+<p class="font-label-lg text-on-surface">Microsoft Word (.docx)</p>
+<p class="text-xs text-on-surface-variant">Best for additional manual editing</p>
+</div>
+</div>
+</label>
+</div>
+<!-- Export Settings -->
+<div class="space-y-6">
+<div>
+<p class="font-label-lg text-on-surface mb-4">Metadata Configuration</p>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<span class="text-sm font-label-sm text-on-surface-variant">Include Table of Contents</span>
+<div class="w-10 h-6 bg-primary rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<span class="text-sm font-label-sm text-on-surface-variant">Embed Custom Fonts</span>
+<div class="w-10 h-6 bg-primary rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-lg text-on-surface">Estimated File Size</span>
+<span class="text-primary font-bold">4.2 MB</span>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary rounded-full font-headline-md text-headline-md flex items-center justify-center gap-3 hover:bg-primary-container transition-all active:scale-95 shadow-lg">
+<span class="material-symbols-outlined">download</span>
+                            Download Export
+                        </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 md:hidden px-4 bg-surface-container-low border-t border-outline-variant shadow-sm rounded-t-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">edit_document</span>
+<span class="font-label-sm text-label-sm">Drafts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">sticky_note_2</span>
+<span class="font-label-sm text-label-sm">Notes</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ios_share</span>
+<span class="font-label-sm text-label-sm">Export</span>
+</a>
+</nav>
+</main>
+</body></html>

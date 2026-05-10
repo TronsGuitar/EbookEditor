@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#243346",
+                    "primary-fixed": "#dde3eb",
+                    "tertiary-fixed-dim": "#b8c8e0",
+                    "surface-tint": "#595f66",
+                    "surface-container-low": "#f5f3ee",
+                    "outline-variant": "#c5c6cb",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#111c2c",
+                    "surface-dim": "#dbdad5",
+                    "surface": "#fbf9f4",
+                    "on-secondary-container": "#586377",
+                    "surface-bright": "#fbf9f4",
+                    "primary-fixed-dim": "#c1c7cf",
+                    "surface-variant": "#e4e2dd",
+                    "secondary-fixed-dim": "#bcc7dd",
+                    "surface-container": "#f0eee9",
+                    "on-primary-fixed": "#161c22",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "outline": "#75777b",
+                    "surface-container-highest": "#e4e2dd",
+                    "surface-container-high": "#eae8e3",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1b1c19",
+                    "on-primary-container": "#959ba2",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#30312e",
+                    "primary": "#181e24",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#c1c7cf",
+                    "background": "#fbf9f4",
+                    "on-tertiary-fixed-variant": "#39485c",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#0d1c2e",
+                    "on-tertiary-container": "#8c9bb2",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#0e1e30",
+                    "tertiary-fixed": "#d4e4fc",
+                    "on-surface-variant": "#44474a",
+                    "on-surface": "#1b1c19",
+                    "secondary": "#545f72",
+                    "primary-container": "#2d3339",
+                    "on-primary-fixed-variant": "#41474e",
+                    "secondary-container": "#d5e0f7",
+                    "secondary-fixed": "#d8e3fa",
+                    "inverse-on-surface": "#f2f1ec",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "280px",
+                    "margin-side": "24px",
+                    "gutter": "16px",
+                    "editor-max-width": "800px",
+                    "unit-base": "8px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Manrope"],
+                    "label-lg": ["Manrope"],
+                    "display-lg": ["Literata"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "editor-body": ["Literata"],
+                    "ui-body-md": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "editor-body": ["20px", {"lineHeight": "32px", "letterSpacing": "0.2px", "fontWeight": "400"}],
+                    "ui-body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c5c6cb; border-radius: 10px; }
+        .paper-shadow { box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-ui-body-md min-h-screen">
+<aside class="hidden md:flex flex-col py-gutter gap-2 w-sidebar-width h-full fixed left-0 top-0 bg-surface-container">
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg text-primary">Manuscript Central</h1>
+</div>
+<nav class="flex flex-col gap-1 px-2">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all rounded-full cursor-pointer">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-lg text-label-lg">Library</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-tertiary-container text-on-secondary-container dark:text-on-tertiary-container rounded-full mx-2 cursor-default">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-lg text-label-lg">Editor</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all rounded-full cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-secondary-fixed-variant mx-2 hover:bg-surface-container-highest transition-all rounded-full cursor-pointer">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-lg text-label-lg">Archive</span>
+</div>
+</nav>
+<div class="mt-auto px-6 py-4 flex items-center gap-3 border-t border-outline-variant">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">A</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Lead Editor</span>
+<span class="text-xs text-on-surface-variant">Manuscript Central</span>
+</div>
+</div>
+</aside>
+<main class="md:ml-sidebar-width min-h-screen flex flex-col">
+<header class="flex items-center justify-between px-margin-side h-20 w-full top-0 sticky bg-background z-40">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full transition-colors">menu_open</button>
+<h2 class="font-headline-md text-headline-md text-primary">Reformatting Workspace</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex items-center gap-2 px-4 py-1.5 bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined text-[18px] text-primary">auto_fix</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Processing: Digital Study AI</span>
+</div>
+<button class="px-6 h-10 bg-primary text-on-primary font-label-lg text-label-lg rounded-full hover:opacity-90 active:scale-95 transition-all">Publish</button>
+</div>
+</header>
+<div class="flex-1 p-margin-side grid grid-cols-12 gap-gutter">
+<section class="col-span-12 lg:col-span-9 flex flex-col gap-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-label-lg text-label-lg uppercase tracking-widest text-on-surface-variant">Original Source (PDF)</h3>
+<span class="text-xs text-outline font-medium italic">Fixed Layout</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest paper-shadow rounded-lg overflow-hidden border border-outline-variant p-8 relative">
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCP94NWMXLrRWF8b5RPaAJiPocT3CAyl82VdeHkRvaY_Llr7Uz5liK2Cudaskc4COzlMtQrvDPbKdIojAKaZMR0lYVZ3_zWsw31FGMSQJccvQkAGtyLjh9PHSnp1Bn0gfGIWs0LycHCqFpV4yX0jPqNW0z_FadOqbbhQpAQ9VXhUbv26-EBYJRIDsgeZKR9WBdQxfoAI_BuE3WXB-IC4qjdnNODCczxVs5CRdSxFzreEG2_tc3VoZDmMock3_bSFfNiyNV0Mci6ivo');"></div>
+<div class="font-serif text-[#2a2a2a] leading-relaxed max-w-full text-sm">
+<div class="text-right mb-12">14</div>
+<h1 class="text-center font-bold mb-8 uppercase tracking-widest">CHAPTER IV</h1>
+<p class="mb-4">The carriage rattled over the cobbled stones as the evening mist settled<br/>
+                                upon the quiet village of Oakhaven. Mr. Sterling adjusted his spectacles,<br/>
+                                peering through the fog-streaked window. It was a night of great un-<br/>
+                                certainty, a night where the shadows seemed to stretch longer than logic<br/>
+                                should permit.</p>
+<p class="mb-4">"We are nearly there, sir," the driver called out, his voice muffled by the<br/>
+                                thick damp air. Sterling nodded, though he knew the driver could not see him.<br/>
+                                His thoughts were anchored on the letter tucked into his waistcoat—the<br/>
+                                ink still smelling faintly of lavender and desperation.</p>
+<div class="mt-8 text-center border-t border-dotted border-outline-variant pt-4 italic text-xs">
+                                    [Page Break - Artifact: 0x242 - Scanner Noise]
+                                </div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-label-lg text-label-lg uppercase tracking-widest text-primary">Reflowable eBook (Preview)</h3>
+<div class="flex gap-2">
+<span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full">ACTIVE</span>
+<span class="text-xs text-outline font-medium italic">Material 3 Core</span>
+</div>
+</div>
+<div class="flex-1 bg-surface paper-shadow rounded-lg overflow-hidden border-2 border-primary p-12 relative overflow-y-auto max-h-[600px]">
+<div class="max-w-editor-max-width mx-auto">
+<div class="mb-16">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-2 text-center uppercase tracking-[0.2em]">The Digital Study</span>
+<h1 class="font-editor-body text-4xl text-center text-primary font-bold">Chapter IV</h1>
+<div class="w-12 h-0.5 bg-outline-variant mx-auto mt-6"></div>
+</div>
+<div class="font-editor-body text-editor-body text-on-surface leading-loose space-y-8">
+<p><span class="text-5xl font-bold float-left mr-3 mt-2 leading-none">T</span>he carriage rattled over the cobbled stones as the evening mist settled upon the quiet village of Oakhaven. Mr. Sterling adjusted his spectacles, peering through the fog-streaked window. It was a night of great uncertainty, a night where the shadows seemed to stretch longer than logic should permit.</p>
+<p>“We are nearly there, sir,” the driver called out, his voice muffled by the thick damp air. Sterling nodded, though he knew the driver could not see him. His thoughts were anchored on the letter tucked into his waistcoat—the ink still smelling faintly of lavender and desperation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-xl p-6 flex items-center justify-between gap-6 border border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-4 border-primary border-t-outline-variant animate-[spin_3s_linear_infinite]"></div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Analysis in Progress</p>
+<p class="text-sm text-on-surface-variant">Synthesizing semantic structures and semantic tags...</p>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-outline font-label-lg text-label-lg rounded-full hover:bg-surface-variant transition-colors">Pause AI</button>
+<button class="px-8 py-2 bg-primary text-on-primary font-label-lg text-label-lg rounded-full shadow-lg active:scale-95 transition-all">Finalize Import</button>
+</div>
+</div>
+</section>
+<aside class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant">
+<h3 class="font-label-lg text-label-lg text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+                        AI Layout Fixes
+                    </h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface leading-tight">Removed hard line breaks</p>
+<p class="text-[11px] text-on-surface-variant">Merged 142 orphaned lines into fluid paragraphs.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface leading-tight">Standardized chapter headers</p>
+<p class="text-[11px] text-on-surface-variant">Detected 'CHAPTER IV' and applied H1 styling.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface leading-tight">Cleaned up artifacts</p>
+<p class="text-[11px] text-on-surface-variant">Removed page numbers and scanner noise marks.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-outline-variant text-[20px]">pending</span>
+<div>
+<p class="text-sm font-semibold text-on-surface-variant leading-tight">Smart Hyphenation</p>
+<p class="text-[11px] text-outline italic">Processing remaining 12 instances...</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-tertiary text-on-tertiary rounded-xl overflow-hidden relative">
+<img alt="Book Mockup" class="w-full h-40 object-cover opacity-60" data-alt="A premium close-up of an open hardcover book resting on a dark walnut desk. The lighting is moody and intellectual, with a soft warm glow hitting the cream-colored pages. The scene embodies the digital study aesthetic, using a palette of deep slate and ivory to convey a sense of timeless literary quality and modern high-performance publishing tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA7xHpaEn0SIHAWoHgSc7Y1fUjQ70tue3lcVKC9vYGvSB7rrSmVyslj7QnEQSsDqDG47_0LeENXi4kgfun6wRbpW44Mm-eYrWkNB83p-phYyNLY72UwKxWchbqDhqnkcF9c0AvzwxaTHoSn6Lii3jSN0T3t8TMxnjFHwwQVS77-0A_4ELbaETXRugXBp9QmDBUd4jnwvdfNswHi1HX_dt3-ozIETaCrT0nOnrmYBmiTIXFxeZaFDN6Ouqutrb31JerrwQZUIjMqS0"/>
+<div class="p-6 relative z-10">
+<p class="font-label-sm text-label-sm uppercase tracking-[0.2em] mb-2 opacity-80">Export Destination</p>
+<h4 class="font-headline-md text-headline-md mb-4">EPUB 3.0 Standard</h4>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="text-xs opacity-70">Ready for Kindle &amp; Apple Books</span>
+</div>
+<button class="w-full py-2 bg-on-tertiary text-tertiary font-label-lg text-label-lg rounded-lg hover:bg-opacity-90 transition-all">Configure Meta</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container-low border-t border-outline-variant px-4">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-1 cursor-default">
+<span class="material-symbols-outlined">edit_document</span>
+<span class="font-label-sm text-label-sm">Drafts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">sticky_note_2</span>
+<span class="font-label-sm text-label-sm">Notes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant px-6 py-1 hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">ios_share</span>
+<span class="font-label-sm text-label-sm">Export</span>
+</div>
+</nav>
+</body></html>
