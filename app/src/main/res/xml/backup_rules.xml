@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Rules that control what gets backed up by Auto Backup (Android 6.0+).
+  See https://developer.android.com/guide/topics/data/autobackup
+-->
+<full-backup-content>
+    <!-- Exclude the Room database from Auto Backup to avoid restoring stale data -->
+    <exclude domain="database" path="ebook_editor_db" />
+    <exclude domain="database" path="ebook_editor_db-shm" />
+    <exclude domain="database" path="ebook_editor_db-wal" />
+    <!-- Exclude DataStore preferences if they contain sensitive author data -->
+    <exclude domain="datastore" path="." />
+</full-backup-content>

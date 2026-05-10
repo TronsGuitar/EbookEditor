@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon foreground layer: an open book with a quill motif, representing
+  "The Digital Study" manuscript editor. The icon fits within the safe zone of
+  the 108dp × 108dp grid (visible area is the central 72dp circle).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Book body (left page) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,30 L54,38 L54,84 L20,76 Z" />
+
+    <!-- Book body (right page) -->
+    <path
+        android:fillColor="#F0EEE9"
+        android:pathData="M54,38 L88,30 L88,76 L54,84 Z" />
+
+    <!-- Book spine -->
+    <path
+        android:fillColor="#2D3339"
+        android:pathData="M52,36 L56,36 L56,86 L52,86 Z" />
+
+    <!-- Left page lines -->
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M28,50 L50,53" />
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M28,58 L50,61" />
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M28,66 L50,69" />
+
+    <!-- Right page lines -->
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M58,53 L80,50" />
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M58,61 L80,58" />
+    <path
+        android:strokeColor="#C5C6CB"
+        android:strokeWidth="1.5"
+        android:pathData="M58,69 L80,66" />
+
+</vector>

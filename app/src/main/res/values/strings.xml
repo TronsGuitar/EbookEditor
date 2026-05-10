@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">The Digital Study</string>
+
+    <!-- Screen titles -->
+    <string name="screen_dashboard_title">Library</string>
+    <string name="screen_editor_title">Editor</string>
+    <string name="screen_import_title">Import Manuscript</string>
+    <string name="screen_export_title">Export &amp; Publish</string>
+    <string name="screen_settings_title">Project Settings</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="cd_settings">Open settings</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_import_manuscript">Import a manuscript</string>
+    <string name="cd_export">Export project</string>
+
+    <!-- Placeholder / empty state text -->
+    <string name="dashboard_empty_state">No projects yet. Tap + to import a manuscript.</string>
+    <string name="editor_placeholder">Editor for project %1$d</string>
+    <string name="import_placeholder">Select a DOCX or PDF file to import.</string>
+    <string name="export_placeholder">Export options for project %1$d</string>
+    <string name="settings_placeholder">Configure project metadata and publishing options.</string>
+</resources>
