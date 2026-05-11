@@ -1,0 +1,11 @@
+{
+  "java.project.sourcePaths": [
+    "app/src/main/java"
+  ],
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "kotlin.languageServer.enabled": true,
+  "files.exclude": {
+    "**/.gradle": true
+  }
+}
