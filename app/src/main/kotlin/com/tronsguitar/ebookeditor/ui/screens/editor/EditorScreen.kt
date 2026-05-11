@@ -1,23 +1,41 @@
 package com.tronsguitar.ebookeditor.ui.screens.editor
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.tronsguitar.ebookeditor.R
+import com.tronsguitar.ebookeditor.data.local.storage.EbookLocalStorage
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 
 /**
@@ -32,8 +50,15 @@ import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 fun EditorScreen(
     projectId: Long,
     onNavigateBack: () -> Unit,
-    onExport: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val storage = remember(context) { EbookLocalStorage(context) }
+    var manuscriptContent by rememberSaveable(projectId) { mutableStateOf("") }
+
+    LaunchedEffect(projectId) {
+        manuscriptContent = storage.read(projectId).orEmpty()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,10 +72,25 @@ fun EditorScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onExport) {
+                    IconButton(
+                        onClick = {
+                            if (manuscriptContent.isNotBlank()) {
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, manuscriptContent)
+                                }
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareIntent,
+                                        context.getString(R.string.share_ebook_chooser_title),
+                                    ),
+                                )
+                            }
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Share,
-                            contentDescription = stringResource(R.string.cd_export),
+                            contentDescription = stringResource(R.string.cd_share_ebook),
                         )
                     }
                 },
@@ -61,9 +101,42 @@ fun EditorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.TopCenter,
         ) {
-            Text(text = stringResource(R.string.editor_placeholder, projectId))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+            ) {
+                OutlinedTextField(
+                    value = manuscriptContent,
+                    onValueChange = { manuscriptContent = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = stringResource(R.string.editor_content_label)) },
+                    minLines = 10,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = {
+                            val created = storage.create(projectId, manuscriptContent)
+                            if (!created) {
+                                storage.update(projectId, manuscriptContent)
+                            }
+                        },
+                    ) {
+                        Text(text = stringResource(R.string.editor_save_button))
+                    }
+                    Button(
+                        onClick = {
+                            storage.delete(projectId)
+                            manuscriptContent = ""
+                        },
+                    ) {
+                        Text(text = stringResource(R.string.editor_delete_button))
+                    }
+                }
+            }
         }
     }
 }
@@ -75,7 +148,6 @@ private fun EditorScreenPreview() {
         EditorScreen(
             projectId = 1L,
             onNavigateBack = {},
-            onExport = {},
         )
     }
 }
