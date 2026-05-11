@@ -200,7 +200,9 @@ class SettingsViewModel @Inject constructor(
             val effectiveDescription = metadata?.description
                 ?.takeIf { it.isNotBlank() }
                 ?: project.synopsis.takeIf { it.isNotBlank() }
-                ?: authorProfile?.bio.orEmpty()
+                ?: authorProfile?.bio
+                    ?.takeIf { it.isNotBlank() }
+                    .orEmpty()
             val effectivePublisher = metadata?.publisher
                 ?.takeIf { it.isNotBlank() }
                 ?: authorProfile?.penName
