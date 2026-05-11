@@ -76,7 +76,7 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "EbookEditor build #${{ github.run_number }} APK"
+          subject: "${{ github.event.repository.name }} build #${{ github.run_number }} APK"
           to: ${{ secrets.BUILD_EMAIL_TO }}
           from: ${{ secrets.BUILD_EMAIL_FROM }}
           secure: true
