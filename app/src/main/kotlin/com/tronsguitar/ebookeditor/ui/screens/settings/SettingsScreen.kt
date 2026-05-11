@@ -165,7 +165,7 @@ fun SettingsScreen(
                 }
             }
 
-            if (uiState.statusMessage == "saved") {
+            if (uiState.statusMessage == SettingsViewModel.STATUS_SAVED) {
                 Text(text = stringResource(R.string.settings_saved_message))
             }
         }

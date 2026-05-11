@@ -156,7 +156,7 @@ class SettingsViewModel @Inject constructor(
                 it.copy(
                     isSaving = false,
                     hasUnsavedChanges = false,
-                    statusMessage = "saved",
+                    statusMessage = STATUS_SAVED,
                 )
             }
         }
@@ -167,6 +167,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     companion object {
+        const val STATUS_SAVED = "saved"
+
         fun autoPopulateUiState(project: Project, metadata: Metadata?): SettingsUiState {
             val effectiveKeywords = metadata?.keywords
                 ?.takeIf { it.isNotBlank() }
