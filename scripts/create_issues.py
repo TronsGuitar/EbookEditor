@@ -239,6 +239,7 @@ def create_issues(token: str, repo: str) -> None:
     for issue in ISSUES:
         resp = None
         for attempt in range(1, MAX_RETRIES + 1):
+            backoff_seconds = 2 ** (attempt - 1)
             try:
                 resp = requests.post(
                     api_url,
@@ -250,7 +251,7 @@ def create_issues(token: str, repo: str) -> None:
                 if attempt == MAX_RETRIES:
                     print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
                     break
-                time.sleep(2 ** (attempt - 1))
+                time.sleep(backoff_seconds)
                 continue
 
             if resp.status_code in (429, 500, 502, 503, 504):
@@ -261,9 +262,9 @@ def create_issues(token: str, repo: str) -> None:
                     )
                     break
                 try:
-                    retry_after = int(resp.headers.get("Retry-After", attempt))
+                    retry_after = int(resp.headers.get("Retry-After", backoff_seconds))
                 except (TypeError, ValueError):
-                    retry_after = 2 ** (attempt - 1)
+                    retry_after = backoff_seconds
                 time.sleep(max(retry_after, 1))
                 continue
             break
