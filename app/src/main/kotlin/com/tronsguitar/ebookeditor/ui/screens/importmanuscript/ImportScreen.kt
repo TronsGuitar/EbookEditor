@@ -380,11 +380,11 @@ internal fun extractDocxText(input: InputStream): String {
                 val xml = zip.readBytes().decodeToString()
                 return xml
                     .replace("</w:p>", "\n")
-                    .replace(Regex("<[^>]+>"), " ")
+                    .replace(XML_TAG_REGEX, " ")
                     .replace("&amp;", "&")
                     .replace("&lt;", "<")
                     .replace("&gt;", ">")
-                    .replace(Regex("[\\t\\r ]+"), " ")
+                    .replace(DOCX_INLINE_WHITESPACE_REGEX, " ")
                     .lines()
                     .joinToString("\n") { it.trim() }
                     .trim()
@@ -398,7 +398,7 @@ internal fun extractDocxText(input: InputStream): String {
 
 internal fun extractPdfText(bytes: ByteArray): String {
     val content = bytes.toString(Charsets.ISO_8859_1)
-    val snippets = Regex("""\(([^)]{1,$MAX_PDF_TEXT_OPERATOR_LENGTH})\)\s*Tj""")
+    val snippets = PDF_TEXT_OPERATOR_REGEX
         .findAll(content)
         .map { it.groupValues[1].replace("""\(""", "(").replace("""\)""", ")") }
         .toList()
@@ -406,7 +406,7 @@ internal fun extractPdfText(bytes: ByteArray): String {
         return snippets.joinToString(separator = "\n").trim()
     }
     val fallback = content.filter { it.code in 32..126 || it == '\n' }
-        .replace(Regex("\\s+"), " ")
+        .replace(PDF_FALLBACK_WHITESPACE_REGEX, " ")
         .trim()
     return if (fallback.length > MAX_PDF_FALLBACK_LENGTH) {
         fallback.take(MAX_PDF_FALLBACK_LENGTH)
@@ -426,6 +426,10 @@ private fun generateProjectId(): Long = UUID.randomUUID().mostSignificantBits an
 
 private const val MAX_PDF_TEXT_OPERATOR_LENGTH = 500
 private const val MAX_PDF_FALLBACK_LENGTH = 4000
+private val XML_TAG_REGEX = Regex("<[^>]+>")
+private val DOCX_INLINE_WHITESPACE_REGEX = Regex("[\\t\\r ]+")
+private val PDF_TEXT_OPERATOR_REGEX = Regex("""\(([^)]{1,$MAX_PDF_TEXT_OPERATOR_LENGTH})\)\s*Tj""")
+private val PDF_FALLBACK_WHITESPACE_REGEX = Regex("\\s+")
 
 @Preview(showBackground = true)
 @Composable
