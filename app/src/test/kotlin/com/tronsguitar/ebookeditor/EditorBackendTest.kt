@@ -70,6 +70,16 @@ class EditorBackendTest {
         assertEquals(5, EditorViewModel.countWords("Hello, world! How are you?"))
     }
 
+    @Test
+    fun `countWords handles carriage return and newline combinations`() {
+        assertEquals(3, EditorViewModel.countWords("alpha\r\nbeta\r\ngamma"))
+    }
+
+    @Test
+    fun `countWords counts numeric and symbol-adjacent tokens`() {
+        assertEquals(4, EditorViewModel.countWords("v2.0 ships in Q4-2026 #release"))
+    }
+
     // ── EditorUiState defaults ────────────────────────────────────────────────
 
     @Test
