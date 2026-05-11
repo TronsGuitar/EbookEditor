@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val DEFAULT_LANGUAGE = "en"
+
 data class SettingsUiState(
     val projectId: Long? = null,
     val title: String = "",
@@ -23,7 +25,7 @@ data class SettingsUiState(
     val synopsis: String = "",
     val hasAiDisclosure: Boolean = false,
     val subtitle: String = "",
-    val language: String = SettingsViewModel.DEFAULT_LANGUAGE,
+    val language: String = DEFAULT_LANGUAGE,
     val isbn: String = "",
     val keywords: String = "",
     val description: String = "",
@@ -137,9 +139,9 @@ class SettingsViewModel @Inject constructor(
             )
             projectRepository.updateProject(updatedProject)
 
-            metadataRepository.upsertMetadata(
+            val metadataId = currentMetadataId
+            val metadataToSave = if (metadataId == null) {
                 Metadata(
-                    id = currentMetadataId ?: 0L,
                     projectId = updatedProject.id,
                     subtitle = draft.subtitle.trim(),
                     language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
@@ -148,8 +150,21 @@ class SettingsViewModel @Inject constructor(
                     description = draft.description.trim(),
                     publisher = draft.publisher.trim(),
                     updatedAt = now,
-                ),
-            )
+                )
+            } else {
+                Metadata(
+                    id = metadataId,
+                    projectId = updatedProject.id,
+                    subtitle = draft.subtitle.trim(),
+                    language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
+                    isbn = draft.isbn.trim(),
+                    keywords = draft.keywords.trim(),
+                    description = draft.description.trim(),
+                    publisher = draft.publisher.trim(),
+                    updatedAt = now,
+                )
+            }
+            metadataRepository.upsertMetadata(metadataToSave)
 
             currentProject = updatedProject
             _uiState.update {
@@ -168,7 +183,6 @@ class SettingsViewModel @Inject constructor(
 
     companion object {
         const val STATUS_SAVED = "saved"
-        const val DEFAULT_LANGUAGE = "en"
 
         fun autoPopulateUiState(project: Project, metadata: Metadata?): SettingsUiState {
             val effectiveKeywords = metadata?.keywords

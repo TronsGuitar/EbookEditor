@@ -100,6 +100,7 @@ fun SettingsScreen(
                 onValueChange = viewModel::onSynopsisChange,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.settings_synopsis_label)) },
+                minLines = 3,
             )
             OutlinedTextField(
                 value = uiState.subtitle,
@@ -136,6 +137,7 @@ fun SettingsScreen(
                 onValueChange = viewModel::onDescriptionChange,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.settings_description_label)) },
+                minLines = 3,
             )
 
             Row(
