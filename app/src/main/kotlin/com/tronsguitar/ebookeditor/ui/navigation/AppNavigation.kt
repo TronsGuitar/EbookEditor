@@ -68,7 +68,7 @@ fun AppNavigation() {
     val topLevelRoutes = remember(destinations) { destinations.map { it.route }.toSet() }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
-    val currentRoute = currentDestination?.route ?: Screen.Dashboard.route
+    val currentRoute = currentDestination?.route.orEmpty()
     val isTopLevel = currentRoute in topLevelRoutes
 
     if (isTopLevel) {
