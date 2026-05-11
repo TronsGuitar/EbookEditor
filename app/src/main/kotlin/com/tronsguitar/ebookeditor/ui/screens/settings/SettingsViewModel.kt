@@ -140,30 +140,17 @@ class SettingsViewModel @Inject constructor(
             projectRepository.updateProject(updatedProject)
 
             val metadataId = currentMetadataId
-            val metadataToSave = if (metadataId == null) {
-                Metadata(
-                    projectId = updatedProject.id,
-                    subtitle = draft.subtitle.trim(),
-                    language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
-                    isbn = draft.isbn.trim(),
-                    keywords = draft.keywords.trim(),
-                    description = draft.description.trim(),
-                    publisher = draft.publisher.trim(),
-                    updatedAt = now,
-                )
-            } else {
-                Metadata(
-                    id = metadataId,
-                    projectId = updatedProject.id,
-                    subtitle = draft.subtitle.trim(),
-                    language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
-                    isbn = draft.isbn.trim(),
-                    keywords = draft.keywords.trim(),
-                    description = draft.description.trim(),
-                    publisher = draft.publisher.trim(),
-                    updatedAt = now,
-                )
-            }
+            val metadataDraft = Metadata(
+                projectId = updatedProject.id,
+                subtitle = draft.subtitle.trim(),
+                language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
+                isbn = draft.isbn.trim(),
+                keywords = draft.keywords.trim(),
+                description = draft.description.trim(),
+                publisher = draft.publisher.trim(),
+                updatedAt = now,
+            )
+            val metadataToSave = metadataId?.let { metadataDraft.copy(id = it) } ?: metadataDraft
             metadataRepository.upsertMetadata(metadataToSave)
 
             currentProject = updatedProject
