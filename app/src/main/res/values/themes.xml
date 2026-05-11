@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Base application theme. The app uses Jetpack Compose for its UI, so this
+      theme only needs to satisfy the Activity window chrome (status bar, nav bar).
+      The Compose MaterialTheme (EbookEditorTheme) handles all in-app theming.
+    -->
+    <style name="Theme.EbookEditor" parent="Theme.Material3.DayNight.NoActionBar" />
+</resources>

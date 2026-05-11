@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Font setup instructions for the Writer's Sanctuary design system.
+
+  The EbookEditor uses two custom typefaces:
+    • Literata  – bookish serif for the editor body (final-book preview feel)
+    • Manrope   – geometric sans-serif for all UI chrome (menus, labels, nav)
+
+  HOW TO ADD THE FONT FILES:
+  ─────────────────────────────────────────────────────────────────────────────
+  1. Download fonts from Google Fonts:
+       Literata: https://fonts.google.com/specimen/Literata
+       Manrope:  https://fonts.google.com/specimen/Manrope
+
+  2. Place the .ttf files in this directory (app/src/main/res/font/) using
+     the exact snake_case filenames below:
+
+       literata_regular.ttf      literata_italic.ttf
+       literata_medium.ttf       manrope_regular.ttf
+       literata_semibold.ttf     manrope_medium.ttf
+       literata_bold.ttf         manrope_semibold.ttf
+                                 manrope_bold.ttf
+
+  3. In app/src/main/kotlin/…/ui/theme/Type.kt, replace the
+     FontFamily.Serif / FontFamily.SansSerif placeholders with real
+     FontFamily(Font(R.font.…, …)) declarations.
+
+  See SETUP.md for full step-by-step instructions.
+  ─────────────────────────────────────────────────────────────────────────────
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      This file intentionally contains no font entries.
+      Replace this with real font-family descriptors once the .ttf files
+      are added to this directory. Example:
+
+      <font
+          android:fontStyle="normal"
+          android:fontWeight="400"
+          android:font="@font/literata_regular" />
+    -->
+</font-family>
