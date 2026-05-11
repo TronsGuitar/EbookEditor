@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -224,7 +225,7 @@ private fun ToggleRow(label: String, initial: Boolean) {
 // ── Models ────────────────────────────────────────────────────────────────────
 
 enum class ExportFormat(val label: String, val icon: ImageVector) {
-    EPUB("EPUB 3.0",   Icons.Outlined.MenuBook),
+    EPUB("EPUB 3.0",   Icons.AutoMirrored.Outlined.MenuBook),
     PDF("Print PDF",   Icons.Outlined.PictureAsPdf),
     DOCX("DOCX",       Icons.Outlined.Description),
 }

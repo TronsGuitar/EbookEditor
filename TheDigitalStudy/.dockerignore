@@ -1,0 +1,11 @@
+# Don't send build outputs or IDE files into the Docker build context
+.gradle/
+build/
+app/build/
+.idea/
+*.iml
+local.properties
+
+# OS noise
+.DS_Store
+Thumbs.db

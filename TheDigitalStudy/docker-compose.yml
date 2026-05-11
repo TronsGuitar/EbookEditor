@@ -1,0 +1,28 @@
+services:
+  android:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: the-digital-study-builder:latest
+
+    # Mount the project so edits on the host are visible immediately.
+    # Two named volumes keep Gradle & Android caches between runs so
+    # you don't re-download dependencies on every build.
+    volumes:
+      - .:/project
+      - gradle-cache:/root/.gradle
+      - android-cache:/root/.android
+
+    # The entrypoint writes local.properties and bootstraps the wrapper JAR,
+    # then executes this default command.
+    command: ["./gradlew", "assembleDebug", "--no-daemon"]
+
+    environment:
+      # Make Gradle output slightly less chatty in CI-style runs
+      - GRADLE_OPTS=-Dorg.gradle.console=plain
+
+# Named volumes persist between `docker compose run` / `docker compose up`
+# invocations so Gradle doesn't re-download the internet on every build.
+volumes:
+  gradle-cache:
+  android-cache:

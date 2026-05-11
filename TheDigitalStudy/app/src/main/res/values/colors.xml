@@ -3,4 +3,6 @@
     <!-- Warm paper-white from Writer's Sanctuary design system -->
     <color name="paper_white">#FBF9F4</color>
     <color name="midnight_ink">#111316</color>
+    <!-- Launcher icon background — deep charcoal from primary palette -->
+    <color name="ic_launcher_background">#181E24</color>
 </resources>

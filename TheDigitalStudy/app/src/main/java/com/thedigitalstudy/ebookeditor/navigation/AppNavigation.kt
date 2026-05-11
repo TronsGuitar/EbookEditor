@@ -4,7 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileUpload
-import androidx.compose.material.icons.outlined.LibraryBooks
+import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,7 +27,7 @@ import com.thedigitalstudy.ebookeditor.ui.screens.SettingsScreen
 // ── Route model ──────────────────────────────────────────────────────────────
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
-    object Dashboard : Screen("dashboard", "Projects", Icons.Outlined.LibraryBooks)
+    object Dashboard : Screen("dashboard", "Projects", Icons.AutoMirrored.Outlined.LibraryBooks)
     object Editor    : Screen("editor/{projectId}", "Editor", Icons.Outlined.Edit) {
         fun createRoute(projectId: String) = "editor/$projectId"
     }

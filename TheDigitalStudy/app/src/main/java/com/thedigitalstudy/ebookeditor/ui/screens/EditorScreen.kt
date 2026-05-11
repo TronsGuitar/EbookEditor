@@ -9,8 +9,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.FormatListBulleted
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -59,7 +59,7 @@ fun EditorScreen(projectId: String, onBack: () -> Unit) {
             TopAppBar(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Outlined.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
                     }
                 },
                 title = {
@@ -77,7 +77,7 @@ fun EditorScreen(projectId: String, onBack: () -> Unit) {
                 ),
                 actions = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Outlined.FormatListBulleted, contentDescription = "Outline")
+                        Icon(Icons.AutoMirrored.Outlined.FormatListBulleted, contentDescription = "Outline")
                     }
                     IconButton(onClick = {}) {
                         Icon(Icons.Outlined.MoreVert, contentDescription = "More")
