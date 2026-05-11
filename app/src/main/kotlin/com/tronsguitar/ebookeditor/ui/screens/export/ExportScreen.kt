@@ -27,6 +27,8 @@ import com.tronsguitar.ebookeditor.R
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 import java.io.File
 
+private const val TAG = "ExportScreen"
+
 /**
  * Export Screen – D2D Compliance & Publishing.
  *
@@ -68,7 +70,7 @@ fun ExportScreen(
                     runCatching {
                         val exportDirectory = File(context.cacheDir, "exports")
                         if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
-                            error("Unable to create export directory at ${exportDirectory.absolutePath}")
+                            error("Unable to create export directory")
                         }
                         val exportFile = File(
                             exportDirectory,
@@ -92,7 +94,7 @@ fun ExportScreen(
                             ),
                         )
                     }.onFailure { throwable ->
-                        Log.e("ExportScreen", "Failed to export and share project $projectId", throwable)
+                        Log.e(TAG, "Failed to export and share project $projectId", throwable)
                         Toast.makeText(
                             context,
                             context.getString(R.string.export_share_failed_message),
