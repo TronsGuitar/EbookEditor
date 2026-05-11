@@ -114,6 +114,7 @@ fun EditorScreen(
                     onValueChange = { manuscriptContent = it },
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.editor_content_label)) },
+                    placeholder = { Text(text = stringResource(R.string.editor_content_placeholder)) },
                     minLines = 10,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
