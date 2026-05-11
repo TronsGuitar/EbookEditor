@@ -92,7 +92,7 @@ fun ExportScreen(
                             ),
                         )
                     }.onFailure { throwable ->
-                        Log.e("ExportScreen", "Unable to export and share file", throwable)
+                        Log.e("ExportScreen", "Failed to export and share project $projectId", throwable)
                         Toast.makeText(
                             context,
                             context.getString(R.string.export_share_failed_message),
