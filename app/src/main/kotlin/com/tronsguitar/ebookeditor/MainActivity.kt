@@ -117,8 +117,8 @@ private fun AuthenticatedContent(
             onClick = {
                 availabilityError = null
                 onAuthenticate(
-                    onSuccess = { isAuthenticated = true },
-                    onError = { availabilityError = it },
+                    { isAuthenticated = true },
+                    { availabilityError = it },
                 )
             },
         ) {

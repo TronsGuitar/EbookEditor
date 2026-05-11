@@ -74,11 +74,13 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.google.material)
 
     // Adaptive layouts (tablet / foldable support)
     implementation(libs.androidx.adaptive)
     implementation(libs.androidx.adaptive.layout)
     implementation(libs.androidx.adaptive.navigation)
+    implementation(libs.androidx.adaptive.navigation.suite)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
