@@ -86,11 +86,11 @@ fun ExportScreen(
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
                         context.startActivity(
-                                Intent.createChooser(
-                                    shareIntent,
-                                    context.getString(R.string.export_share_chooser_title),
-                                ),
-                            )
+                            Intent.createChooser(
+                                shareIntent,
+                                context.getString(R.string.export_share_chooser_title),
+                            ),
+                        )
                     }.onFailure { throwable ->
                         Log.e("ExportScreen", "Unable to export and share file", throwable)
                         Toast.makeText(
