@@ -202,13 +202,12 @@ class SettingsViewModel @Inject constructor(
                 ?: project.synopsis.takeIf { it.isNotBlank() }
                 ?: authorProfile?.bio
                     ?.takeIf { it.isNotBlank() }
-                    .orEmpty()
+                    ?: ""
             val effectivePublisher = metadata?.publisher
                 ?.takeIf { it.isNotBlank() }
                 ?: authorProfile?.penName
                     ?.takeIf { it.isNotBlank() }
-                    .orEmpty()
-                    .ifBlank { project.authorName }
+                ?: project.authorName
 
             return SettingsUiState(
                 projectId = project.id,
