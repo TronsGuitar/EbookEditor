@@ -2,6 +2,7 @@ package com.tronsguitar.ebookeditor.ui.screens.export
 
 import android.content.ClipData
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -89,7 +90,8 @@ fun ExportScreen(
                                 context.getString(R.string.share_ebook_chooser_title),
                             ),
                         )
-                    }.onFailure {
+                    }.onFailure { throwable ->
+                        Log.e("ExportScreen", "Unable to export and share file", throwable)
                         Toast.makeText(
                             context,
                             context.getString(R.string.export_share_failed_message),
