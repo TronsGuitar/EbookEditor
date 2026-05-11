@@ -25,6 +25,8 @@
     <string name="editor_save_button">Save</string>
     <string name="editor_delete_button">Delete</string>
     <string name="share_ebook_chooser_title">Share ebook with</string>
+    <string name="editor_save_failed_message">Unable to save ebook locally.</string>
+    <string name="editor_delete_failed_message">Unable to delete ebook locally.</string>
     <string name="import_placeholder">Select a DOCX or PDF file to import.</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="settings_placeholder">Configure project metadata and publishing options.</string>

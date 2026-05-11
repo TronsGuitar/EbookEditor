@@ -1,6 +1,7 @@
 package com.tronsguitar.ebookeditor.ui.screens.editor
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,7 +54,7 @@ fun EditorScreen(
 ) {
     val context = LocalContext.current
     val localStorage = storage ?: remember(context) { EbookLocalStorage(context) }
-    var manuscriptContent by rememberSaveable(projectId) { mutableStateOf("") }
+    var manuscriptContent by remember(projectId) { mutableStateOf("") }
 
     LaunchedEffect(projectId) {
         manuscriptContent = localStorage.read(projectId).orEmpty()
@@ -116,21 +116,35 @@ fun EditorScreen(
                     label = { Text(text = stringResource(R.string.editor_content_label)) },
                     placeholder = { Text(text = stringResource(R.string.editor_content_placeholder)) },
                     minLines = 10,
-                    maxLines = 20,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(
                         onClick = {
-                            localStorage.save(projectId, manuscriptContent)
+                            val saved = localStorage.save(projectId, manuscriptContent)
+                            if (!saved) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.editor_save_failed_message),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                         },
                     ) {
                         Text(text = stringResource(R.string.editor_save_button))
                     }
                     Button(
                         onClick = {
-                            localStorage.delete(projectId)
-                            manuscriptContent = ""
+                            val deleted = localStorage.delete(projectId)
+                            if (deleted) {
+                                manuscriptContent = ""
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.editor_delete_failed_message),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                         },
                     ) {
                         Text(text = stringResource(R.string.editor_delete_button))
