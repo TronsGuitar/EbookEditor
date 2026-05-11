@@ -69,6 +69,9 @@ fun ExportScreen(
                 onClick = {
                     runCatching {
                         val exportDirectory = File(context.cacheDir, "exports")
+                        if (exportDirectory.exists() && !exportDirectory.isDirectory) {
+                            error("Export path is not a directory")
+                        }
                         if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
                             error("Unable to create export directory")
                         }
