@@ -250,16 +250,20 @@ def create_issues(token: str, repo: str) -> None:
                 if attempt == MAX_RETRIES:
                     print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
                     break
-                time.sleep(attempt)
+                time.sleep(2 ** (attempt - 1))
                 continue
 
             if resp.status_code in (429, 500, 502, 503, 504):
                 if attempt == MAX_RETRIES:
+                    print(
+                        f"❌  Failed to create '{issue['title']}': "
+                        f"HTTP {resp.status_code} after {MAX_RETRIES} attempts – {resp.text[:200]}"
+                    )
                     break
                 try:
                     retry_after = int(resp.headers.get("Retry-After", attempt))
                 except (TypeError, ValueError):
-                    retry_after = attempt
+                    retry_after = 2 ** (attempt - 1)
                 time.sleep(max(retry_after, 1))
                 continue
             break
