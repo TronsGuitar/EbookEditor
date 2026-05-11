@@ -55,4 +55,19 @@
     <string name="import_fallback_text_template">Imported source: %1$s</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="settings_placeholder">Configure project metadata and publishing options.</string>
+    <string name="settings_no_project_message">No project found. Import a manuscript to configure metadata.</string>
+    <string name="settings_title_label">Book title</string>
+    <string name="settings_author_label">Author name</string>
+    <string name="settings_genre_label">Genre</string>
+    <string name="settings_synopsis_label">Synopsis</string>
+    <string name="settings_subtitle_label">Subtitle</string>
+    <string name="settings_language_label">Language</string>
+    <string name="settings_isbn_label">ISBN</string>
+    <string name="settings_keywords_label">Keywords</string>
+    <string name="settings_publisher_label">Publisher</string>
+    <string name="settings_description_label">Description</string>
+    <string name="settings_ai_disclosure_label">AI disclosure acknowledged</string>
+    <string name="settings_save_button">Save metadata</string>
+    <string name="settings_saving_description">Saving metadata</string>
+    <string name="settings_saved_message">Metadata saved.</string>
 </resources>
