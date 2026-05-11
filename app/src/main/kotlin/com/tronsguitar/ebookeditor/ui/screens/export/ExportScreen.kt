@@ -68,7 +68,7 @@ fun ExportScreen(
                     runCatching {
                         val exportDirectory = File(context.cacheDir, "exports")
                         if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
-                            error("Unable to create export directory")
+                            error("Unable to create export directory at ${exportDirectory.absolutePath}")
                         }
                         val exportFile = File(
                             exportDirectory,
