@@ -56,6 +56,12 @@ def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -
     )
     return max(seconds_until_retry, minimum_delay)
 
+
+def _truncate_error_text(text: str, limit: int = 200) -> str:
+    if len(text) <= limit:
+        return text
+    return f"{text[:limit]}..."
+
 ISSUES = [
     {
         "title": "1. Project Foundation and Structure",
@@ -290,14 +296,15 @@ def create_issues(token: str, repo: str) -> None:
                 if attempt == MAX_RETRIES:
                     print(
                         f"❌  Failed to create '{issue['title']}': "
-                        f"HTTP {resp.status_code} after {MAX_RETRIES} attempts – {resp.text[:200]}"
+                        f"HTTP {resp.status_code} after {MAX_RETRIES} attempts – "
+                        f"{_truncate_error_text(resp.text)}"
                     )
                     break
                 retry_after = _retry_after_seconds(
                     retry_after_value=resp.headers.get("Retry-After"),
                     fallback_seconds=_retry_delay_seconds(attempt),
                 )
-                time.sleep(max(retry_after, MIN_RETRY_DELAY_SECONDS))
+                time.sleep(retry_after)
                 continue
             break
 
@@ -311,7 +318,7 @@ def create_issues(token: str, repo: str) -> None:
         else:
             print(
                 f"❌  Failed to create '{issue['title']}': "
-                f"HTTP {resp.status_code} – {resp.text[:200]}"
+                f"HTTP {resp.status_code} – {_truncate_error_text(resp.text)}"
             )
         # Respect GitHub's secondary rate-limit (1 write/s is safe)
         time.sleep(1)
