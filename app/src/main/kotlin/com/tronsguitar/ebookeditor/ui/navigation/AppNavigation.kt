@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -26,6 +27,7 @@ import com.tronsguitar.ebookeditor.ui.screens.export.ExportScreen
 import com.tronsguitar.ebookeditor.ui.screens.importmanuscript.ImportScreen
 import com.tronsguitar.ebookeditor.ui.screens.settings.SettingsScreen
 
+/** Model for top-level destinations rendered in adaptive navigation UI. */
 private data class TopLevelDestination(
     val route: String,
     val label: String,
@@ -41,27 +43,33 @@ private data class TopLevelDestination(
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val destinations = listOf(
-        TopLevelDestination(
-            route = Screen.Dashboard.route,
-            label = stringResource(R.string.screen_dashboard_title),
-            icon = Icons.AutoMirrored.Outlined.LibraryBooks,
-        ),
-        TopLevelDestination(
-            route = Screen.Import.route,
-            label = stringResource(R.string.screen_import_title),
-            icon = Icons.Outlined.FileUpload,
-        ),
-        TopLevelDestination(
-            route = Screen.Settings.route,
-            label = stringResource(R.string.screen_settings_title),
-            icon = Icons.Outlined.Settings,
-        ),
-    )
+    val dashboardLabel = stringResource(R.string.screen_dashboard_title)
+    val importLabel = stringResource(R.string.screen_import_title)
+    val settingsLabel = stringResource(R.string.screen_settings_title)
+    val destinations = remember(dashboardLabel, importLabel, settingsLabel) {
+        listOf(
+            TopLevelDestination(
+                route = Screen.Dashboard.route,
+                label = dashboardLabel,
+                icon = Icons.AutoMirrored.Outlined.LibraryBooks,
+            ),
+            TopLevelDestination(
+                route = Screen.Import.route,
+                label = importLabel,
+                icon = Icons.Outlined.FileUpload,
+            ),
+            TopLevelDestination(
+                route = Screen.Settings.route,
+                label = settingsLabel,
+                icon = Icons.Outlined.Settings,
+            ),
+        )
+    }
+    val topLevelRoutes = remember(destinations) { destinations.mapTo(mutableSetOf()) { it.route } }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
     val isTopLevel = currentDestination == null ||
-        destinations.any { it.route == currentDestination.route }
+        currentDestination.route in topLevelRoutes
 
     if (isTopLevel) {
         NavigationSuiteScaffold(
