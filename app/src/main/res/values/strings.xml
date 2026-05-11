@@ -16,12 +16,25 @@
     <string name="cd_import_manuscript">Import a manuscript</string>
     <string name="cd_export">Export project</string>
     <string name="cd_share_ebook">Share ebook</string>
+    <string name="cd_add_chapter">Add chapter</string>
+    <string name="cd_delete_chapter">Delete chapter</string>
 
     <!-- Placeholder / empty state text -->
     <string name="dashboard_empty_state">No projects yet. Tap + to import a manuscript.</string>
     <string name="editor_placeholder">Editor for project %1$d</string>
     <string name="editor_content_label">Ebook content</string>
     <string name="editor_content_placeholder">Write your ebook manuscript here</string>
+    <string name="editor_autosave_saving">Saving…</string>
+    <string name="editor_autosave_saved">Saved</string>
+    <string name="editor_word_count">%1$d words</string>
+    <string name="editor_chapters_heading">Chapters</string>
+    <string name="editor_chapter_word_count">%1$d words</string>
+    <string name="editor_total_word_count">Total: %1$d words</string>
+    <string name="editor_no_chapter_hint">Add a chapter to start writing.</string>
+    <string name="editor_add_chapter_title">New Chapter</string>
+    <string name="editor_chapter_title_label">Chapter title</string>
+    <string name="editor_add_chapter_confirm">Add</string>
+    <string name="editor_add_chapter_cancel">Cancel</string>
     <string name="editor_save_button">Save</string>
     <string name="editor_delete_button">Delete</string>
     <string name="share_ebook_chooser_title">Share ebook with</string>
