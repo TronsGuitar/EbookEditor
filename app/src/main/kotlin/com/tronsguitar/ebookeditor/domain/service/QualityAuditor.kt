@@ -82,6 +82,9 @@ class QualityAuditor(
         chapters.flatMap { chapter ->
             chapter.sections.filter { section ->
                 section.title.isBlank() ||
+                    // Section content is stored as a flattened string for the editor,
+                    // while paragraphs may be present in semantic import flows.
+                    // A section is considered empty only when both are blank.
                     (section.content.isBlank() && section.paragraphs.none { it.text.isNotBlank() })
             }.map { section ->
                 QualityIssue(
@@ -114,6 +117,10 @@ class QualityAuditor(
         return issues
     }
 
+    /**
+     * Finds duplicate titles after normalizing each value by trimming and lowercasing.
+     * This intentionally treats casing/whitespace variants as the same title.
+     */
     private fun findDuplicates(titles: List<String>): List<String> =
         titles.asSequence()
             .map { it.trim().lowercase() }
