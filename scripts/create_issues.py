@@ -12,6 +12,8 @@ Requirements:
 """
 
 import argparse
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 import sys
 import time
 
@@ -19,6 +21,52 @@ try:
     import requests
 except ImportError:
     sys.exit("Install the 'requests' package first:  pip install requests")
+
+REQUEST_TIMEOUT_SECONDS = 15
+MAX_RETRIES = 3
+MIN_RETRY_DELAY_SECONDS = 1
+MAX_RETRY_DELAY_SECONDS = 60
+
+
+def _retry_backoff_seconds(attempt: int) -> int:
+    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)
+
+
+def _retry_delay_seconds(attempt: int) -> int:
+    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)
+
+
+def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:
+    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)
+    if retry_after_value is None:
+        return minimum_delay
+
+    if retry_after_value.isdigit():
+        return max(int(retry_after_value), minimum_delay)
+
+    try:
+        retry_after_datetime = parsedate_to_datetime(retry_after_value)
+    except (TypeError, ValueError):
+        return minimum_delay
+
+    if retry_after_datetime.tzinfo is None:
+        retry_after_datetime = retry_after_datetime.replace(tzinfo=timezone.utc)
+
+    seconds_until_retry = int(
+        (retry_after_datetime - datetime.now(timezone.utc)).total_seconds()
+    )
+    if seconds_until_retry < 0:
+        print(
+            f"⚠️  Retry-After header datetime is in the past ({retry_after_value}); "
+            f"using fallback delay of {minimum_delay}s."
+        )
+    return min(max(seconds_until_retry, minimum_delay), MAX_RETRY_DELAY_SECONDS)
+
+
+def _truncate_error_text(text: str, limit: int = 200) -> str:
+    if len(text) <= limit:
+        return text
+    return f"{text[:limit]}..."
 
 ISSUES = [
     {
@@ -234,7 +282,44 @@ def create_issues(token: str, repo: str) -> None:
 
     created = []
     for issue in ISSUES:
-        resp = requests.post(api_url, headers=headers, json=issue)
+        resp = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                resp = requests.post(
+                    api_url,
+                    headers=headers,
+                    json=issue,
+                    timeout=REQUEST_TIMEOUT_SECONDS,
+                )
+            except requests.RequestException as exc:
+                if attempt == MAX_RETRIES:
+                    print(
+                        f"❌  Failed to create '{issue['title']}': network error – "
+                        f"{_truncate_error_text(str(exc))}"
+                    )
+                    break
+                time.sleep(_retry_delay_seconds(attempt))
+                continue
+
+            if resp.status_code in (429, 500, 502, 503, 504):
+                if attempt == MAX_RETRIES:
+                    print(
+                        f"❌  Failed to create '{issue['title']}': "
+                        f"HTTP {resp.status_code} after {MAX_RETRIES} attempts – "
+                        f"{_truncate_error_text(resp.text)}"
+                    )
+                    break
+                retry_after = _retry_after_seconds(
+                    retry_after_value=resp.headers.get("Retry-After"),
+                    fallback_seconds=_retry_delay_seconds(attempt),
+                )
+                time.sleep(retry_after)
+                continue
+            break
+
+        if resp is None:
+            continue
+
         if resp.status_code == 201:
             data = resp.json()
             print(f"✅  Created #{data['number']}: {data['title']}  →  {data['html_url']}")
@@ -242,7 +327,7 @@ def create_issues(token: str, repo: str) -> None:
         else:
             print(
                 f"❌  Failed to create '{issue['title']}': "
-                f"HTTP {resp.status_code} – {resp.text[:200]}"
+                f"HTTP {resp.status_code} – {_truncate_error_text(resp.text)}"
             )
         # Respect GitHub's secondary rate-limit (1 write/s is safe)
         time.sleep(1)
