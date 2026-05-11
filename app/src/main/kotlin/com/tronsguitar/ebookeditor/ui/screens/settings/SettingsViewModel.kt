@@ -207,7 +207,8 @@ class SettingsViewModel @Inject constructor(
                 ?.takeIf { it.isNotBlank() }
                 ?: authorProfile?.penName
                     ?.takeIf { it.isNotBlank() }
-                ?: project.authorName
+                    .orEmpty()
+                    .ifBlank { project.authorName }
 
             return SettingsUiState(
                 projectId = project.id,
