@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,8 +47,8 @@ fun AppNavigation() {
     val dashboardLabel = stringResource(R.string.screen_dashboard_title)
     val importLabel = stringResource(R.string.screen_import_title)
     val settingsLabel = stringResource(R.string.screen_settings_title)
-    val destinations = remember(dashboardLabel, importLabel, settingsLabel) {
-        listOf(
+    val (destinations, topLevelRoutes) = remember(dashboardLabel, importLabel, settingsLabel) {
+        val computedDestinations = listOf(
             TopLevelDestination(
                 route = Screen.Dashboard.route,
                 label = dashboardLabel,
@@ -64,8 +65,8 @@ fun AppNavigation() {
                 icon = Icons.Outlined.Settings,
             ),
         )
+        computedDestinations to computedDestinations.map { it.route }.toSet()
     }
-    val topLevelRoutes = remember(destinations) { destinations.map { it.route }.toSet() }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
     val currentRoute = currentDestination?.route.orEmpty()
@@ -101,7 +102,7 @@ fun AppNavigation() {
 
 @Composable
 private fun AppNavHost(
-    navController: androidx.navigation.NavHostController,
+    navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
