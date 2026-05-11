@@ -38,9 +38,51 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Upload debug APK
+      - name: Zip debug APK
+        run: |
+          mkdir -p dist
+          zip -j dist/app-debug-${{ github.run_number }}.zip app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload debug APK ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: app-debug-zip
+          path: dist/app-debug-${{ github.run_number }}.zip
           retention-days: 14
+
+      - name: Check email configuration
+        id: email_config
+        if: github.event_name != 'pull_request'
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          BUILD_EMAIL_TO: ${{ secrets.BUILD_EMAIL_TO }}
+          BUILD_EMAIL_FROM: ${{ secrets.BUILD_EMAIL_FROM }}
+        run: |
+          if [ -n "$SMTP_SERVER" ] && [ -n "$SMTP_PORT" ] && [ -n "$SMTP_USERNAME" ] && [ -n "$SMTP_PASSWORD" ] && [ -n "$BUILD_EMAIL_TO" ] && [ -n "$BUILD_EMAIL_FROM" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Email delivery skipped: configure SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, BUILD_EMAIL_TO, and BUILD_EMAIL_FROM secrets."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Email zipped APK
+        if: github.event_name != 'pull_request' && steps.email_config.outputs.enabled == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "EbookEditor build #${{ github.run_number }} APK"
+          to: ${{ secrets.BUILD_EMAIL_TO }}
+          from: ${{ secrets.BUILD_EMAIL_FROM }}
+          secure: true
+          body: |
+            Build completed for ${{ github.repository }}.
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: dist/app-debug-${{ github.run_number }}.zip

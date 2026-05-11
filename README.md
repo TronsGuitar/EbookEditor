@@ -24,3 +24,17 @@ The Digital Study is an Android-first ebook editor focused on professional publi
 - **Quality Auditor:** Automated logic gate validating metadata, AI usage disclosures, and image resolution requirements before export.
 
 This stack prioritizes professional typography and semantic integrity so manuscript output is ready for major publishing platforms.
+
+## CI build delivery (zipped APK by email)
+
+The `Build APK` workflow now zips the generated debug APK and emails it after successful builds (non-PR runs).
+
+Configure these repository secrets:
+- `SMTP_SERVER`
+- `SMTP_PORT`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `BUILD_EMAIL_TO`
+- `BUILD_EMAIL_FROM`
+
+If any are missing, the workflow will still build and upload the zip artifact but will skip email delivery.
