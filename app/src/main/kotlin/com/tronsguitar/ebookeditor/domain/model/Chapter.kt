@@ -7,7 +7,7 @@ data class Chapter(
     val summary: String = "",
     val orderIndex: Int = 0,
     val wordCount: Int = 0,
-    val status: String = "DRAFT",
+    val status: String = ChapterStatus.DRAFT,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
 )

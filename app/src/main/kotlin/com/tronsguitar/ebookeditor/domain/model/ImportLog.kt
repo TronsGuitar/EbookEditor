@@ -5,7 +5,7 @@ data class ImportLog(
     val projectId: Long?,
     val sourceUri: String,
     val sourceType: String,
-    val status: String = "SUCCESS",
+    val status: String = ImportStatus.SUCCESS,
     val message: String = "",
     val createdAt: Long = System.currentTimeMillis(),
 )

@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.tronsguitar.ebookeditor.domain.model.ChapterStatus
 
 @Entity(
     tableName = "chapters",
@@ -25,7 +26,7 @@ data class ChapterEntity(
     val summary: String = "",
     val orderIndex: Int = 0,
     val wordCount: Int = 0,
-    val status: String = "DRAFT",
+    val status: String = ChapterStatus.DRAFT,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
 )

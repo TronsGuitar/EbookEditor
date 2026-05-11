@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.tronsguitar.ebookeditor.domain.model.ExportStatus
 
 @Entity(
     tableName = "export_jobs",
@@ -22,7 +23,7 @@ data class ExportJobEntity(
     val id: Long = 0,
     val projectId: Long,
     val format: String,
-    val status: String = "QUEUED",
+    val status: String = ExportStatus.QUEUED,
     val outputUri: String? = null,
     val errorMessage: String? = null,
     val createdAt: Long = System.currentTimeMillis(),

@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.tronsguitar.ebookeditor.domain.model.ImportStatus
 
 @Entity(
     tableName = "import_logs",
@@ -23,7 +24,7 @@ data class ImportLogEntity(
     val projectId: Long?,
     val sourceUri: String,
     val sourceType: String,
-    val status: String = "SUCCESS",
+    val status: String = ImportStatus.SUCCESS,
     val message: String = "",
     val createdAt: Long = System.currentTimeMillis(),
 )

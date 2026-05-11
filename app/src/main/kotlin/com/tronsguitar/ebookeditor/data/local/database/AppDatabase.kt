@@ -17,6 +17,9 @@ import com.tronsguitar.ebookeditor.data.local.database.entity.SectionEntity
  *
  * Increment [version] and provide a [androidx.room.migration.Migration] whenever
  * the schema changes to avoid destructive migrations in production.
+ *
+ * Version 2 introduces core local tables for chapter/section structure, metadata,
+ * author profile, compliance reports, import logs, and export jobs.
  */
 @Database(
     entities = [
