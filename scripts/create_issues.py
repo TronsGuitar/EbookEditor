@@ -20,6 +20,9 @@ try:
 except ImportError:
     sys.exit("Install the 'requests' package first:  pip install requests")
 
+REQUEST_TIMEOUT_SECONDS = 15
+MAX_RETRIES = 3
+
 ISSUES = [
     {
         "title": "1. Project Foundation and Structure",
@@ -234,7 +237,36 @@ def create_issues(token: str, repo: str) -> None:
 
     created = []
     for issue in ISSUES:
-        resp = requests.post(api_url, headers=headers, json=issue)
+        resp = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                resp = requests.post(
+                    api_url,
+                    headers=headers,
+                    json=issue,
+                    timeout=REQUEST_TIMEOUT_SECONDS,
+                )
+            except requests.RequestException as exc:
+                if attempt == MAX_RETRIES:
+                    print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
+                    break
+                time.sleep(attempt)
+                continue
+
+            if resp.status_code in (429, 500, 502, 503, 504):
+                if attempt == MAX_RETRIES:
+                    break
+                try:
+                    retry_after = int(resp.headers.get("Retry-After", attempt))
+                except (TypeError, ValueError):
+                    retry_after = attempt
+                time.sleep(max(retry_after, 1))
+                continue
+            break
+
+        if resp is None:
+            continue
+
         if resp.status_code == 201:
             data = resp.json()
             print(f"✅  Created #{data['number']}: {data['title']}  →  {data['html_url']}")
