@@ -25,10 +25,11 @@ except ImportError:
 REQUEST_TIMEOUT_SECONDS = 15
 MAX_RETRIES = 3
 MIN_RETRY_DELAY_SECONDS = 1
+MAX_RETRY_DELAY_SECONDS = 60
 
 
 def _retry_backoff_seconds(attempt: int) -> int:
-    return 2 ** (attempt - 1)
+    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)
 
 
 def _retry_delay_seconds(attempt: int) -> int:
@@ -54,7 +55,12 @@ def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -
     seconds_until_retry = int(
         (retry_after_datetime - datetime.now(timezone.utc)).total_seconds()
     )
-    return max(seconds_until_retry, minimum_delay)
+    if seconds_until_retry < 0:
+        print(
+            f"⚠️  Retry-After header datetime is in the past ({retry_after_value}); "
+            f"using fallback delay of {minimum_delay}s."
+        )
+    return min(max(seconds_until_retry, minimum_delay), MAX_RETRY_DELAY_SECONDS)
 
 
 def _truncate_error_text(text: str, limit: int = 200) -> str:
@@ -277,7 +283,6 @@ def create_issues(token: str, repo: str) -> None:
     created = []
     for issue in ISSUES:
         resp = None
-        request_completed = False
         for attempt in range(1, MAX_RETRIES + 1):
             try:
                 resp = requests.post(
@@ -286,7 +291,6 @@ def create_issues(token: str, repo: str) -> None:
                     json=issue,
                     timeout=REQUEST_TIMEOUT_SECONDS,
                 )
-                request_completed = True
             except requests.RequestException as exc:
                 if attempt == MAX_RETRIES:
                     print(
@@ -313,7 +317,7 @@ def create_issues(token: str, repo: str) -> None:
                 continue
             break
 
-        if not request_completed or resp is None:
+        if resp is None:
             continue
 
         if resp.status_code == 201:
