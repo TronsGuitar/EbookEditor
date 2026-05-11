@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.adaptive)
     implementation(libs.androidx.adaptive.layout)
     implementation(libs.androidx.adaptive.navigation)
+    implementation(libs.androidx.adaptive.navigation.suite)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
