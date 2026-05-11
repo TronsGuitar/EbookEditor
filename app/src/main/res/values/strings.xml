@@ -15,10 +15,18 @@
     <string name="cd_navigate_back">Navigate back</string>
     <string name="cd_import_manuscript">Import a manuscript</string>
     <string name="cd_export">Export project</string>
+    <string name="cd_share_ebook">Share ebook</string>
 
     <!-- Placeholder / empty state text -->
     <string name="dashboard_empty_state">No projects yet. Tap + to import a manuscript.</string>
     <string name="editor_placeholder">Editor for project %1$d</string>
+    <string name="editor_content_label">Ebook content</string>
+    <string name="editor_content_placeholder">Write your ebook manuscript here</string>
+    <string name="editor_save_button">Save</string>
+    <string name="editor_delete_button">Delete</string>
+    <string name="share_ebook_chooser_title">Share ebook with</string>
+    <string name="editor_save_failed_message">Unable to save ebook locally.</string>
+    <string name="editor_delete_failed_message">Unable to delete ebook locally.</string>
     <string name="import_placeholder">Select a DOCX or PDF file to import.</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="settings_placeholder">Configure project metadata and publishing options.</string>

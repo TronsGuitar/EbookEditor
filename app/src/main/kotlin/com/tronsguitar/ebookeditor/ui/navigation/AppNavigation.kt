@@ -48,9 +48,6 @@ fun AppNavigation() {
             EditorScreen(
                 projectId = projectId,
                 onNavigateBack = { navController.popBackStack() },
-                onExport = {
-                    navController.navigate(Screen.Export.createRoute(projectId))
-                },
             )
         }
 
