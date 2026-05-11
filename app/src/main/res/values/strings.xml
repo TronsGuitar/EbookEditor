@@ -62,6 +62,8 @@
     <string name="import_log_complete">Import complete. Opening editor…</string>
     <string name="import_log_save_failed">Unable to store imported manuscript locally.</string>
     <string name="import_fallback_text_template">Imported source: %1$s</string>
+    <string name="import_progress_loading">Loading…</string>
+    <string name="import_progress_parsing">Parsing…</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="export_share_button">Export and share file</string>
     <string name="export_share_chooser_title">Share exported file with</string>
