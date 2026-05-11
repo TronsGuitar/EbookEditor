@@ -76,6 +76,7 @@ fun ExportScreen(
                             exportDirectory,
                             "project-$projectId-${System.currentTimeMillis()}.txt",
                         )
+                        // TODO(#9): Replace with actual exported project content.
                         exportFile.writeText("Project $projectId export")
                         val uri = FileProvider.getUriForFile(
                             context,
