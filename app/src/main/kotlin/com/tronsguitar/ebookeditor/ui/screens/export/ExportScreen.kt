@@ -1,11 +1,15 @@
 package com.tronsguitar.ebookeditor.ui.screens.export
 
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,10 +19,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.FileProvider
 import com.tronsguitar.ebookeditor.R
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
+import java.io.File
+
+private const val TAG = "ExportScreen"
 
 /**
  * Export Screen – D2D Compliance & Publishing.
@@ -32,6 +41,7 @@ fun ExportScreen(
     projectId: Long,
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -55,6 +65,50 @@ fun ExportScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = stringResource(R.string.export_placeholder, projectId))
+            Button(
+                onClick = {
+                    runCatching {
+                        val exportDirectory = File(context.cacheDir, "exports")
+                        if (exportDirectory.exists() && !exportDirectory.isDirectory) {
+                            error("Export path is not a directory")
+                        }
+                        if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
+                            error("Unable to create export directory")
+                        }
+                        val exportFile = File(
+                            exportDirectory,
+                            "project-$projectId-${System.currentTimeMillis()}.txt",
+                        )
+                        // TODO(#9): Replace with actual exported project content.
+                        exportFile.writeText("Project $projectId export")
+                        val uri = FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.fileprovider",
+                            exportFile,
+                        )
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        context.startActivity(
+                            Intent.createChooser(
+                                shareIntent,
+                                context.getString(R.string.export_share_chooser_title),
+                            ),
+                        )
+                    }.onFailure { throwable ->
+                        Log.e(TAG, "Failed to export and share project $projectId", throwable)
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.export_share_failed_message),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                },
+            ) {
+                Text(text = stringResource(R.string.export_share_button))
+            }
         }
     }
 }
