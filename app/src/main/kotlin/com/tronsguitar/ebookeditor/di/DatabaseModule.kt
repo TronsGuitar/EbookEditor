@@ -3,7 +3,9 @@ package com.tronsguitar.ebookeditor.di
 import android.content.Context
 import androidx.room.Room
 import com.tronsguitar.ebookeditor.data.local.database.AppDatabase
+import com.tronsguitar.ebookeditor.data.local.database.dao.ChapterDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.ProjectDao
+import com.tronsguitar.ebookeditor.data.local.database.dao.SectionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +35,10 @@ object DatabaseModule {
 
     @Provides
     fun provideProjectDao(database: AppDatabase): ProjectDao = database.projectDao()
+
+    @Provides
+    fun provideChapterDao(database: AppDatabase): ChapterDao = database.chapterDao()
+
+    @Provides
+    fun provideSectionDao(database: AppDatabase): SectionDao = database.sectionDao()
 }

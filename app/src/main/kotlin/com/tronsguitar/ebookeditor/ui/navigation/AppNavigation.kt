@@ -43,10 +43,8 @@ fun AppNavigation() {
         composable(
             route = Screen.Editor.route,
             arguments = listOf(navArgument("projectId") { type = NavType.LongType }),
-        ) { backStackEntry ->
-            val projectId = backStackEntry.arguments?.getLong("projectId") ?: -1L
+        ) {
             EditorScreen(
-                projectId = projectId,
                 onNavigateBack = { navController.popBackStack() },
             )
         }
