@@ -55,6 +55,7 @@
     <string name="import_fallback_text_template">Imported source: %1$s</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="export_share_button">Export and share file</string>
+    <string name="export_share_chooser_title">Share exported file with</string>
     <string name="export_share_failed_message">Unable to export and share this file.</string>
     <string name="settings_placeholder">Configure project metadata and publishing options.</string>
     <string name="settings_no_project_message">No project found. Import a manuscript to configure metadata.</string>
