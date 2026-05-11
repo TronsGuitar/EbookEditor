@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Warm paper-white from Writer's Sanctuary design system -->
+    <color name="paper_white">#FBF9F4</color>
+    <color name="midnight_ink">#111316</color>
+</resources>
