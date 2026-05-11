@@ -59,6 +59,7 @@ import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 import java.io.InputStream
 import java.util.UUID
 import java.util.zip.ZipInputStream
+import java.util.concurrent.atomic.AtomicLong
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -369,7 +370,7 @@ private fun LogRow(entry: ImportUiLog) {
 
 private fun ImportFormat.extractText(input: InputStream): String = when (this) {
     ImportFormat.DOCX -> extractDocxText(input)
-    ImportFormat.PDF -> extractPdfText(input.readBytes())
+    ImportFormat.PDF -> extractPdfText(input)
 }
 
 internal fun extractDocxText(input: InputStream): String {
@@ -415,6 +416,11 @@ internal fun extractPdfText(bytes: ByteArray): String {
     }
 }
 
+internal fun extractPdfText(input: InputStream): String {
+    val bytes = input.readNBytes(MAX_PDF_INPUT_BYTES)
+    return extractPdfText(bytes)
+}
+
 private fun Context.resolveDisplayName(uri: Uri): String? {
     return contentResolver.query(uri, null, null, null, null)?.use { cursor ->
         val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -422,10 +428,20 @@ private fun Context.resolveDisplayName(uri: Uri): String? {
     }
 }
 
-private fun generateProjectId(): Long = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
+private fun generateProjectId(): Long {
+    val timestampPart = System.currentTimeMillis().coerceAtLeast(0)
+    val sequencePart = PROJECT_ID_COUNTER.getAndIncrement() and PROJECT_ID_COUNTER_MASK
+    val randomPart = (UUID.randomUUID().leastSignificantBits and PROJECT_ID_RANDOM_MASK)
+    return ((timestampPart shl PROJECT_ID_COUNTER_BITS) or sequencePart xor randomPart) and Long.MAX_VALUE
+}
 
 private const val MAX_PDF_TEXT_OPERATOR_LENGTH = 500
 private const val MAX_PDF_FALLBACK_LENGTH = 4000
+private const val MAX_PDF_INPUT_BYTES = 1_048_576
+private const val PROJECT_ID_COUNTER_BITS = 10
+private const val PROJECT_ID_COUNTER_MASK = (1L shl PROJECT_ID_COUNTER_BITS) - 1
+private const val PROJECT_ID_RANDOM_MASK = (1L shl 20) - 1
+private val PROJECT_ID_COUNTER = AtomicLong(0)
 private val XML_TAG_REGEX = Regex("<[^>]+>")
 private val DOCX_INLINE_WHITESPACE_REGEX = Regex("[\\t\\r ]+")
 private val PDF_TEXT_OPERATOR_REGEX = Regex("""\(([^)]{1,$MAX_PDF_TEXT_OPERATOR_LENGTH})\)\s*Tj""")
