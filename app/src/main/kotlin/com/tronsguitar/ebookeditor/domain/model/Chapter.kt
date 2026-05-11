@@ -5,6 +5,7 @@ data class Chapter(
     val projectId: Long,
     val title: String,
     val summary: String = "",
+    val sections: List<Section> = emptyList(),
     val orderIndex: Int = 0,
     val wordCount: Int = 0,
     val status: String = ChapterStatus.DRAFT,
