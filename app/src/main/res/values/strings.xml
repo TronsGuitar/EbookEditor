@@ -9,6 +9,15 @@
     <string name="screen_import_title">Import Manuscript</string>
     <string name="screen_export_title">Export &amp; Publish</string>
     <string name="screen_settings_title">Project Settings</string>
+    <string name="auth_gate_title">Unlock your writing workspace</string>
+    <string name="auth_gate_message">Use your device credentials or biometrics to continue.</string>
+    <string name="auth_gate_button">Authenticate</string>
+    <string name="auth_prompt_title">Authenticate to The Digital Study</string>
+    <string name="auth_prompt_subtitle">Confirm your identity to access author profiles.</string>
+    <string name="auth_error_no_hardware">Biometric authentication hardware is not available on this device.</string>
+    <string name="auth_error_hardware_unavailable">Authentication hardware is currently unavailable. Try again.</string>
+    <string name="auth_error_none_enrolled">Set up biometrics or a device credential in system settings, then try again.</string>
+    <string name="auth_error_generic">Authentication was cancelled or failed. Please try again.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="cd_settings">Open settings</string>
