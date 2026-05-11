@@ -28,6 +28,18 @@
     <string name="editor_save_failed_message">Unable to save ebook locally.</string>
     <string name="editor_delete_failed_message">Unable to delete ebook locally.</string>
     <string name="import_placeholder">Select a DOCX or PDF file to import.</string>
+    <string name="import_browse_placeholder">Tap browse to choose your source manuscript.</string>
+    <string name="import_accepts_extension">Accepts .%1$s</string>
+    <string name="import_browse_button">Browse files</string>
+    <string name="import_start_button">Import manuscript</string>
+    <string name="import_log_title">Import log</string>
+    <string name="import_log_no_file_selected">No file selected.</string>
+    <string name="import_log_selected_file">Selected file: %1$s</string>
+    <string name="import_log_reading_file">Reading and parsing manuscript…</string>
+    <string name="import_log_read_failed">Unable to read the selected file.</string>
+    <string name="import_log_complete">Import complete. Opening editor…</string>
+    <string name="import_log_save_failed">Unable to store imported manuscript locally.</string>
+    <string name="import_fallback_text_template">Imported source: %1$s</string>
     <string name="export_placeholder">Export options for project %1$d</string>
     <string name="settings_placeholder">Configure project metadata and publishing options.</string>
 </resources>
