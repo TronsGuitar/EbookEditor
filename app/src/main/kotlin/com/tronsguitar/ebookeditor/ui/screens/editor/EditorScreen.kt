@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -223,7 +223,7 @@ private fun ChapterSidebar(
         }
 
         LazyColumn(modifier = Modifier.weight(1f)) {
-            itemsIndexed(chapters) { _, chapter ->
+            items(chapters) { chapter ->
                 ChapterRow(
                     chapter = chapter,
                     isSelected = chapter.id == selectedChapterId,

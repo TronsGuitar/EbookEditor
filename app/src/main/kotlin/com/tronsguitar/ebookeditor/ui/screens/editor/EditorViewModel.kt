@@ -169,7 +169,7 @@ class EditorViewModel @Inject constructor(
     fun addChapter(title: String) {
         if (title.isBlank()) return
         viewModelScope.launch {
-            val orderIndex = _uiState.value.chapters.size
+            val orderIndex = _uiState.value.chapters.maxOfOrNull { it.orderIndex }?.plus(1) ?: 0
             val newId = chapterRepository.createChapter(projectId, title.trim(), orderIndex)
             selectChapter(newId)
         }

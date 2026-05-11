@@ -52,6 +52,24 @@ class EditorBackendTest {
         assertEquals(4, EditorViewModel.countWords("first\nsecond\nthird\nfourth"))
     }
 
+    @Test
+    fun `countWords treats hyphenated compound as one token`() {
+        // "well-known" is one whitespace-delimited token
+        assertEquals(1, EditorViewModel.countWords("well-known"))
+    }
+
+    @Test
+    fun `countWords treats words with apostrophes as one token`() {
+        // "don't" is one whitespace-delimited token
+        assertEquals(1, EditorViewModel.countWords("don't"))
+    }
+
+    @Test
+    fun `countWords counts sentence with punctuation attached to words`() {
+        // Punctuation attached to words does not create extra whitespace splits
+        assertEquals(5, EditorViewModel.countWords("Hello, world! How are you?"))
+    }
+
     // ── EditorUiState defaults ────────────────────────────────────────────────
 
     @Test
