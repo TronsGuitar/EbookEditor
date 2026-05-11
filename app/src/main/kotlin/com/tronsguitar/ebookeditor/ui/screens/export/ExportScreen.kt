@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.FileProvider
 import com.tronsguitar.ebookeditor.R
+import com.tronsguitar.ebookeditor.data.local.storage.EbookLocalStorage
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 import java.io.File
 
@@ -42,6 +44,7 @@ fun ExportScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val localStorage = remember(context) { EbookLocalStorage(context) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,19 +78,36 @@ fun ExportScreen(
                         if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
                             error("Unable to create export directory")
                         }
-                        val exportFile = File(
-                            exportDirectory,
-                            "project-$projectId-${System.currentTimeMillis()}.txt",
-                        )
-                        // TODO(#9): Replace with actual exported project content.
-                        exportFile.writeText("Project $projectId export")
+                        val originalFile = localStorage.loadOriginalFile(projectId)
+                        val ext = localStorage.getOriginalExtension(projectId)
+                        val exportFile: File
+                        val mimeType: String
+                        if (originalFile != null && ext != null) {
+                            exportFile = File(
+                                exportDirectory,
+                                "project-$projectId-${System.currentTimeMillis()}.$ext",
+                            )
+                            originalFile.copyTo(exportFile, overwrite = true)
+                            mimeType = when (ext) {
+                                "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                "pdf" -> "application/pdf"
+                                else -> "application/octet-stream"
+                            }
+                        } else {
+                            exportFile = File(
+                                exportDirectory,
+                                "project-$projectId-${System.currentTimeMillis()}.txt",
+                            )
+                            exportFile.writeText("Project $projectId export")
+                            mimeType = "text/plain"
+                        }
                         val uri = FileProvider.getUriForFile(
                             context,
                             "${context.packageName}.fileprovider",
                             exportFile,
                         )
                         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
+                            type = mimeType
                             putExtra(Intent.EXTRA_STREAM, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }

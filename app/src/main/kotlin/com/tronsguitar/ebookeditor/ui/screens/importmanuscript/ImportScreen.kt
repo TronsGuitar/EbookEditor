@@ -30,10 +30,11 @@ import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -53,6 +54,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.tronsguitar.ebookeditor.R
 import com.tronsguitar.ebookeditor.data.local.storage.EbookLocalStorage
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
@@ -84,6 +87,7 @@ fun ImportScreen(
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
     var selectedFileName by rememberSaveable { mutableStateOf<String?>(null) }
     var isImporting by remember { mutableStateOf(false) }
+    var importProgress by remember { mutableStateOf<ImportProgressState?>(null) }
     val importLogs = remember { mutableStateListOf<ImportUiLog>() }
     val filePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) {
@@ -97,15 +101,62 @@ fun ImportScreen(
         }
         selectedUri = uri
         selectedFileName = context.resolveDisplayName(uri)
-        importLogs.add(
-            ImportUiLog(
-                type = LogType.INFO,
-                message = context.getString(
-                    R.string.import_log_selected_file,
-                    selectedFileName ?: uri.toString(),
-                ),
-            ),
-        )
+        importLogs.clear()
+        // Begin import immediately: show Loading modal, then Parsing modal, then navigate.
+        coroutineScope.launch {
+            isImporting = true
+            importProgress = ImportProgressState.LOADING
+            val selectedFileLabel = selectedFileName
+            val fileBytes = withContext(Dispatchers.IO) {
+                context.contentResolver.openInputStream(uri)?.use { it.readNBytes(MAX_IMPORT_FILE_BYTES) }
+            }
+            importProgress = ImportProgressState.PARSING
+            val result = withContext(Dispatchers.IO) {
+                if (fileBytes == null) {
+                    return@withContext ImportResult(projectId = null, saved = false, hadReadFailure = true)
+                }
+                runCatching {
+                    val importedText = selectedFormat.extractText(fileBytes.inputStream())
+                    val normalizedText = importedText.ifBlank {
+                        context.getString(
+                            R.string.import_fallback_text_template,
+                            selectedFileLabel ?: selectedFormat.extension.uppercase(),
+                        )
+                    }
+                    val projectId = generateProjectId()
+                    val saved = localStorage.save(projectId, normalizedText)
+                    localStorage.saveOriginal(projectId, fileBytes, selectedFormat.extension)
+                    ImportResult(projectId = projectId, saved = saved, hadReadFailure = false)
+                }.getOrElse {
+                    ImportResult(projectId = null, saved = false, hadReadFailure = true)
+                }
+            }
+            importProgress = null
+            if (result.hadReadFailure) {
+                importLogs.add(
+                    ImportUiLog(
+                        type = LogType.WARNING,
+                        message = context.getString(R.string.import_log_read_failed),
+                    ),
+                )
+            } else if (result.saved && result.projectId != null) {
+                importLogs.add(
+                    ImportUiLog(
+                        type = LogType.SUCCESS,
+                        message = context.getString(R.string.import_log_complete),
+                    ),
+                )
+                onImportComplete(result.projectId)
+            } else {
+                importLogs.add(
+                    ImportUiLog(
+                        type = LogType.WARNING,
+                        message = context.getString(R.string.import_log_save_failed),
+                    ),
+                )
+            }
+            isImporting = false
+        }
     }
     Scaffold(
         topBar = {
@@ -132,7 +183,7 @@ fun ImportScreen(
         ) {
             Text(
                 text = stringResource(R.string.import_placeholder),
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -157,7 +208,7 @@ fun ImportScreen(
                     .height(180.dp)
                     .border(
                         width = 2.dp,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant,
+                        color = MaterialTheme.colorScheme.outlineVariant,
                         shape = RoundedCornerShape(8.dp),
                     ),
                 contentAlignment = Alignment.Center,
@@ -190,78 +241,11 @@ fun ImportScreen(
                 }
             }
 
-            Button(
-                onClick = {
-                    val uri = selectedUri ?: return@Button
-                    coroutineScope.launch {
-                        isImporting = true
-                        importLogs.clear()
-                        importLogs.add(
-                            ImportUiLog(
-                                type = LogType.INFO,
-                                message = context.getString(R.string.import_log_reading_file),
-                            ),
-                        )
-                        val selectedFileLabel = selectedFileName
-                        val result = withContext(Dispatchers.IO) {
-                            runCatching {
-                                val importedText = context.contentResolver.openInputStream(uri)?.use { input ->
-                                    selectedFormat.extractText(input)
-                                }.orEmpty()
-                                val normalizedText = importedText.ifBlank {
-                                    context.getString(
-                                        R.string.import_fallback_text_template,
-                                        selectedFileLabel ?: selectedFormat.extension.uppercase(),
-                                    )
-                                }
-                                val projectId = generateProjectId()
-                                val saved = localStorage.save(projectId, normalizedText)
-                                ImportResult(projectId = projectId, saved = saved, hadReadFailure = false)
-                            }.getOrElse {
-                                ImportResult(projectId = null, saved = false, hadReadFailure = true)
-                            }
-                        }
-                        if (result.hadReadFailure) {
-                            importLogs.add(
-                                ImportUiLog(
-                                    type = LogType.WARNING,
-                                    message = context.getString(R.string.import_log_read_failed),
-                                ),
-                            )
-                        } else if (result.saved && result.projectId != null) {
-                            importLogs.add(
-                                ImportUiLog(
-                                    type = LogType.SUCCESS,
-                                    message = context.getString(R.string.import_log_complete),
-                                ),
-                            )
-                            onImportComplete(result.projectId)
-                        } else {
-                            importLogs.add(
-                                ImportUiLog(
-                                    type = LogType.WARNING,
-                                    message = context.getString(R.string.import_log_save_failed),
-                                ),
-                            )
-                        }
-                        isImporting = false
-                    }
-                },
-                enabled = selectedUri != null && !isImporting,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(text = stringResource(R.string.import_start_button))
-            }
-
-            if (isImporting) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
-
             if (importLogs.isNotEmpty()) {
                 Card(
                     shape = RoundedCornerShape(8.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     ),
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -274,6 +258,10 @@ fun ImportScreen(
                 }
             }
         }
+    }
+
+    importProgress?.let { state ->
+        ImportProgressDialog(state = state)
     }
 }
 
@@ -320,9 +308,9 @@ private fun FormatCard(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) {
-                androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.primaryContainer
             } else {
-                androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow
+                MaterialTheme.colorScheme.surfaceContainerLow
             },
         ),
     ) {
@@ -358,9 +346,9 @@ private fun LogRow(entry: ImportUiLog) {
             },
             contentDescription = null,
             tint = when (entry.type) {
-                LogType.SUCCESS -> androidx.compose.material3.MaterialTheme.colorScheme.primary
-                LogType.INFO -> androidx.compose.material3.MaterialTheme.colorScheme.secondary
-                LogType.WARNING -> androidx.compose.material3.MaterialTheme.colorScheme.error
+                LogType.SUCCESS -> MaterialTheme.colorScheme.primary
+                LogType.INFO -> MaterialTheme.colorScheme.secondary
+                LogType.WARNING -> MaterialTheme.colorScheme.error
             },
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -441,6 +429,8 @@ private const val MAX_PDF_TEXT_OPERATOR_LENGTH = 500
 private const val MAX_PDF_FALLBACK_LENGTH = 4000
 // Read at most 1 MB from PDFs for lightweight on-device parsing.
 private const val MAX_PDF_INPUT_BYTES = 1_048_576
+// Read at most 50 MB per imported file to guard against OutOfMemoryError.
+private const val MAX_IMPORT_FILE_BYTES = 50 * 1_048_576
 private const val PROJECT_ID_COUNTER_BITS = 10
 private const val PROJECT_ID_COUNTER_MASK = (1L shl PROJECT_ID_COUNTER_BITS) - 1
 private const val PROJECT_ID_RANDOM_MASK = (1L shl 20) - 1
@@ -449,6 +439,49 @@ private val XML_TAG_REGEX = Regex("<[^>]+>")
 private val DOCX_INLINE_WHITESPACE_REGEX = Regex("[\\t\\r ]+")
 private val PDF_TEXT_OPERATOR_REGEX = Regex("""\(([^)]{1,$MAX_PDF_TEXT_OPERATOR_LENGTH})\)\s*Tj""")
 private val PDF_FALLBACK_WHITESPACE_REGEX = Regex("\\s+")
+
+private enum class ImportProgressState { LOADING, PARSING }
+
+/**
+ * Non-dismissible modal dialog shown while a manuscript is being imported.
+ *
+ * Shows a circular spinner and a label that transitions from "Loading…" (reading
+ * file bytes into memory) to "Parsing…" (extracting text and structure).
+ */
+@Composable
+private fun ImportProgressDialog(state: ImportProgressState) {
+    Dialog(
+        onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+    ) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+        ) {
+            Column(
+                modifier = Modifier.padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                CircularProgressIndicator(modifier = Modifier.width(48.dp))
+                Text(
+                    text = stringResource(
+                        when (state) {
+                            ImportProgressState.LOADING -> R.string.import_progress_loading
+                            ImportProgressState.PARSING -> R.string.import_progress_parsing
+                        },
+                    ),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
