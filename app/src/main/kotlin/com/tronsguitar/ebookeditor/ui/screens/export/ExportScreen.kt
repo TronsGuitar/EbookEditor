@@ -67,7 +67,10 @@ fun ExportScreen(
                 onClick = {
                     runCatching {
                         val exportDirectory = File(context.cacheDir, "exports").apply { mkdirs() }
-                        val exportFile = File(exportDirectory, "project-$projectId.txt")
+                        val exportFile = File(
+                            exportDirectory,
+                            "project-$projectId-${System.currentTimeMillis()}.txt",
+                        )
                         exportFile.writeText("Project $projectId export")
                         val uri = FileProvider.getUriForFile(
                             context,
