@@ -1,6 +1,5 @@
 package com.tronsguitar.ebookeditor.ui.screens.export
 
-import android.content.ClipData
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -67,7 +66,10 @@ fun ExportScreen(
             Button(
                 onClick = {
                     runCatching {
-                        val exportDirectory = File(context.cacheDir, "exports").apply { mkdirs() }
+                        val exportDirectory = File(context.cacheDir, "exports")
+                        if (!exportDirectory.exists() && !exportDirectory.mkdirs()) {
+                            error("Unable to create export directory")
+                        }
                         val exportFile = File(
                             exportDirectory,
                             "project-$projectId-${System.currentTimeMillis()}.txt",
@@ -81,7 +83,6 @@ fun ExportScreen(
                         val shareIntent = Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"
                             putExtra(Intent.EXTRA_STREAM, uri)
-                            clipData = ClipData.newRawUri(exportFile.name, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
                         context.startActivity(
