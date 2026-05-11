@@ -32,16 +32,17 @@ def _retry_backoff_seconds(attempt: int) -> int:
 
 
 def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:
+    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)
     if retry_after_value is None:
-        return fallback_seconds
+        return minimum_delay
 
     if retry_after_value.isdigit():
-        return int(retry_after_value)
+        return max(int(retry_after_value), minimum_delay)
 
     try:
         retry_after_datetime = parsedate_to_datetime(retry_after_value)
     except (TypeError, ValueError):
-        return fallback_seconds
+        return minimum_delay
 
     if retry_after_datetime.tzinfo is None:
         retry_after_datetime = retry_after_datetime.replace(tzinfo=timezone.utc)
@@ -49,7 +50,7 @@ def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -
     seconds_until_retry = int(
         (retry_after_datetime - datetime.now(timezone.utc)).total_seconds()
     )
-    return max(seconds_until_retry, fallback_seconds)
+    return max(seconds_until_retry, minimum_delay)
 
 ISSUES = [
     {
@@ -278,7 +279,9 @@ def create_issues(token: str, repo: str) -> None:
                 if attempt == MAX_RETRIES:
                     print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
                     break
-                time.sleep(_retry_backoff_seconds(attempt))
+                time.sleep(
+                    max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)
+                )
                 continue
 
             if resp.status_code in (429, 500, 502, 503, 504):
