@@ -9,6 +9,30 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "parsedate_to_datetime",
+        "importPath": "email.utils",
+        "description": "email.utils",
+        "isExtraImport": true,
+        "detail": "email.utils",
+        "documentation": {}
+    },
+    {
         "label": "sys",
         "kind": 6,
         "isExtraImport": true,
@@ -31,7 +55,7 @@
         "kind": 2,
         "importPath": "scripts.create_issues",
         "description": "scripts.create_issues",
-        "peekOfCode": "def create_issues(token: str, repo: str) -> None:\n    api_url = f\"https://api.github.com/repos/{repo}/issues\"\n    headers = {\n        \"Authorization\": f\"Bearer {token}\",\n        \"Accept\": \"application/vnd.github.v3+json\",\n    }\n    created = []\n    for issue in ISSUES:\n        resp = requests.post(api_url, headers=headers, json=issue)\n        if resp.status_code == 201:",
+        "peekOfCode": "def create_issues(token: str, repo: str) -> None:\n    api_url = f\"https://api.github.com/repos/{repo}/issues\"\n    headers = {\n        \"Authorization\": f\"Bearer {token}\",\n        \"Accept\": \"application/vnd.github.v3+json\",\n    }\n    created = []\n    for issue in ISSUES:\n        resp = None\n        for attempt in range(1, MAX_RETRIES + 1):",
         "detail": "scripts.create_issues",
         "documentation": {}
     },
@@ -41,6 +65,42 @@
         "importPath": "scripts.create_issues",
         "description": "scripts.create_issues",
         "peekOfCode": "def main() -> None:\n    parser = argparse.ArgumentParser(\n        description=\"Create eBookEditor checklist issues on GitHub.\"\n    )\n    parser.add_argument(\n        \"--token\",\n        required=True,\n        help=\"GitHub personal access token (needs 'repo' scope for classic tokens, or 'issues:write' permission for fine-grained tokens)\",\n    )\n    parser.add_argument(",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "REQUEST_TIMEOUT_SECONDS",
+        "kind": 5,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "REQUEST_TIMEOUT_SECONDS = 15\nMAX_RETRIES = 3\nMIN_RETRY_DELAY_SECONDS = 1\nMAX_RETRY_DELAY_SECONDS = 60\ndef _retry_backoff_seconds(attempt: int) -> int:\n    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)\ndef _retry_delay_seconds(attempt: int) -> int:\n    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)\ndef _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:\n    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_RETRIES",
+        "kind": 5,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "MAX_RETRIES = 3\nMIN_RETRY_DELAY_SECONDS = 1\nMAX_RETRY_DELAY_SECONDS = 60\ndef _retry_backoff_seconds(attempt: int) -> int:\n    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)\ndef _retry_delay_seconds(attempt: int) -> int:\n    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)\ndef _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:\n    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)\n    if retry_after_value is None:",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "MIN_RETRY_DELAY_SECONDS",
+        "kind": 5,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "MIN_RETRY_DELAY_SECONDS = 1\nMAX_RETRY_DELAY_SECONDS = 60\ndef _retry_backoff_seconds(attempt: int) -> int:\n    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)\ndef _retry_delay_seconds(attempt: int) -> int:\n    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)\ndef _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:\n    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)\n    if retry_after_value is None:\n        return minimum_delay",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_RETRY_DELAY_SECONDS",
+        "kind": 5,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "MAX_RETRY_DELAY_SECONDS = 60\ndef _retry_backoff_seconds(attempt: int) -> int:\n    return min(2 ** (attempt - 1), MAX_RETRY_DELAY_SECONDS)\ndef _retry_delay_seconds(attempt: int) -> int:\n    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)\ndef _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:\n    minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)\n    if retry_after_value is None:\n        return minimum_delay\n    if retry_after_value.isdigit():",
         "detail": "scripts.create_issues",
         "documentation": {}
     },
