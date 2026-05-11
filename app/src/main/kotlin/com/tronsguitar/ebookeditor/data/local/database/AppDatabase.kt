@@ -5,6 +5,7 @@ import androidx.room.migration.Migration
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.tronsguitar.ebookeditor.data.local.database.dao.ChapterDao
+import com.tronsguitar.ebookeditor.data.local.database.dao.MetadataDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.ProjectDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.SectionDao
 import com.tronsguitar.ebookeditor.data.local.database.entity.AuthorProfileEntity
@@ -43,6 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun projectDao(): ProjectDao
     abstract fun chapterDao(): ChapterDao
     abstract fun sectionDao(): SectionDao
+    abstract fun metadataDao(): MetadataDao
 
     companion object {
         const val DATABASE_NAME = "ebook_editor_db"

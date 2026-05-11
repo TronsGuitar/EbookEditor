@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.tronsguitar.ebookeditor.data.local.database.AppDatabase
 import com.tronsguitar.ebookeditor.data.local.database.dao.ChapterDao
+import com.tronsguitar.ebookeditor.data.local.database.dao.MetadataDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.ProjectDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.SectionDao
 import dagger.Module
@@ -41,4 +42,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSectionDao(database: AppDatabase): SectionDao = database.sectionDao()
+
+    @Provides
+    fun provideMetadataDao(database: AppDatabase): MetadataDao = database.metadataDao()
 }
