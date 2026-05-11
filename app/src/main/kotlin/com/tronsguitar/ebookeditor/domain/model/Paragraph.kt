@@ -8,6 +8,10 @@ data class Paragraph(
     val manualFormatting: ManualFormatting = ManualFormatting(),
     val orderIndex: Int = 0,
 ) {
+    /**
+     * Semantic styles are authoritative for rendering and export, even when
+     * manual style requests are present in [manualFormatting].
+     */
     fun resolvedStyle(): SemanticTextStyle = semanticStyle
 }
 
@@ -19,6 +23,12 @@ enum class SemanticTextStyle {
 }
 
 data class ManualFormatting(
+    /**
+     * Requested ad-hoc style captured from editor interactions.
+     *
+     * The semantic model keeps this value for auditing/editor UX, but it does
+     * not override [Paragraph.semanticStyle].
+     */
     val requestedStyle: SemanticTextStyle? = null,
     val isBold: Boolean = false,
     val isItalic: Boolean = false,
