@@ -44,7 +44,7 @@ class SettingsViewModel @Inject constructor(
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     private var currentProject: Project? = null
-    private var currentMetadataId: Long = 0L
+    private var currentMetadataId: Long? = null
     private var metadataJob: Job? = null
 
     init {
@@ -58,7 +58,7 @@ class SettingsViewModel @Inject constructor(
                 if (project == null) {
                     metadataJob?.cancel()
                     currentProject = null
-                    currentMetadataId = 0L
+                    currentMetadataId = null
                     _uiState.value = SettingsUiState(
                         statusMessage = "",
                         hasProject = false,
@@ -73,7 +73,7 @@ class SettingsViewModel @Inject constructor(
                     metadataJob?.cancel()
                     metadataJob = viewModelScope.launch {
                         metadataRepository.getMetadataForProject(project.id).collect { metadata ->
-                            currentMetadataId = metadata?.id ?: 0L
+                            currentMetadataId = metadata?.id
                             if (_uiState.value.hasUnsavedChanges) return@collect
                             val populatedState = autoPopulateUiState(project, metadata)
                             _uiState.value = populatedState
@@ -139,7 +139,7 @@ class SettingsViewModel @Inject constructor(
 
             metadataRepository.upsertMetadata(
                 Metadata(
-                    id = currentMetadataId,
+                    id = currentMetadataId ?: 0L,
                     projectId = updatedProject.id,
                     subtitle = draft.subtitle.trim(),
                     language = draft.language.trim().ifBlank { "en" },

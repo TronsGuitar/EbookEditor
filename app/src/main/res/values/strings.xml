@@ -68,5 +68,6 @@
     <string name="settings_description_label">Description</string>
     <string name="settings_ai_disclosure_label">AI disclosure acknowledged</string>
     <string name="settings_save_button">Save metadata</string>
+    <string name="settings_saving_description">Saving metadata</string>
     <string name="settings_saved_message">Metadata saved.</string>
 </resources>
