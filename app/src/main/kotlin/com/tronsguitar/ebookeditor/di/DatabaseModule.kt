@@ -3,6 +3,7 @@ package com.tronsguitar.ebookeditor.di
 import android.content.Context
 import androidx.room.Room
 import com.tronsguitar.ebookeditor.data.local.database.AppDatabase
+import com.tronsguitar.ebookeditor.data.local.database.dao.AuthorProfileDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.ChapterDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.MetadataDao
 import com.tronsguitar.ebookeditor.data.local.database.dao.ProjectDao
@@ -45,4 +46,7 @@ object DatabaseModule {
 
     @Provides
     fun provideMetadataDao(database: AppDatabase): MetadataDao = database.metadataDao()
+
+    @Provides
+    fun provideAuthorProfileDao(database: AppDatabase): AuthorProfileDao = database.authorProfileDao()
 }

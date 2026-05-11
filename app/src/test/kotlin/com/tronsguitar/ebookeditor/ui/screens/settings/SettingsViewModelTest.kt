@@ -1,5 +1,6 @@
 package com.tronsguitar.ebookeditor.ui.screens.settings
 
+import com.tronsguitar.ebookeditor.domain.model.AuthorProfile
 import com.tronsguitar.ebookeditor.domain.model.Metadata
 import com.tronsguitar.ebookeditor.domain.model.Project
 import org.junit.Assert.assertEquals
@@ -58,5 +59,29 @@ class SettingsViewModelTest {
         assertEquals("custom keywords", uiState.keywords)
         assertEquals("Custom description", uiState.description)
         assertEquals("Custom publisher", uiState.publisher)
+    }
+
+    @Test
+    fun `autopopulate falls back to author profile for blank metadata defaults`() {
+        val project = Project(
+            id = 11,
+            title = "Draft",
+            authorName = "Project Author",
+            genre = "Fantasy",
+            synopsis = "",
+        )
+        val profile = AuthorProfile(
+            penName = "Pen Name",
+            bio = "Profile bio",
+        )
+
+        val uiState = SettingsViewModel.autoPopulateUiState(
+            project = project,
+            metadata = null,
+            authorProfile = profile,
+        )
+
+        assertEquals("Profile bio", uiState.description)
+        assertEquals("Pen Name", uiState.publisher)
     }
 }

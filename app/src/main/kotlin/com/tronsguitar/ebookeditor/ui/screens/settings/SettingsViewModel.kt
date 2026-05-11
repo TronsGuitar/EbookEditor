@@ -2,8 +2,10 @@ package com.tronsguitar.ebookeditor.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tronsguitar.ebookeditor.data.repository.AuthorProfileRepository
 import com.tronsguitar.ebookeditor.data.repository.MetadataRepository
 import com.tronsguitar.ebookeditor.data.repository.ProjectRepository
+import com.tronsguitar.ebookeditor.domain.model.AuthorProfile
 import com.tronsguitar.ebookeditor.domain.model.Metadata
 import com.tronsguitar.ebookeditor.domain.model.Project
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,17 +42,32 @@ data class SettingsUiState(
 class SettingsViewModel @Inject constructor(
     private val projectRepository: ProjectRepository,
     private val metadataRepository: MetadataRepository,
+    private val authorProfileRepository: AuthorProfileRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     private var currentProject: Project? = null
+    private var currentAuthorProfile: AuthorProfile? = null
+    private var currentMetadata: Metadata? = null
     private var currentMetadataId: Long? = null
     private var metadataJob: Job? = null
 
     init {
+        observeAuthorProfile()
         observeCurrentProject()
+    }
+
+    private fun observeAuthorProfile() {
+        viewModelScope.launch {
+            authorProfileRepository.getLatestProfile().collect { profile ->
+                currentAuthorProfile = profile
+                val project = currentProject ?: return@collect
+                if (_uiState.value.hasUnsavedChanges) return@collect
+                _uiState.value = autoPopulateUiState(project, currentMetadata, profile)
+            }
+        }
     }
 
     private fun observeCurrentProject() {
@@ -75,9 +92,10 @@ class SettingsViewModel @Inject constructor(
                     metadataJob?.cancel()
                     metadataJob = viewModelScope.launch {
                         metadataRepository.getMetadataForProject(project.id).collect { metadata ->
+                            currentMetadata = metadata
                             currentMetadataId = metadata?.id
                             if (_uiState.value.hasUnsavedChanges) return@collect
-                            val populatedState = autoPopulateUiState(project, metadata)
+                            val populatedState = autoPopulateUiState(project, metadata, currentAuthorProfile)
                             _uiState.value = populatedState
                             if (metadata == null) {
                                 metadataRepository.upsertMetadata(
@@ -171,15 +189,22 @@ class SettingsViewModel @Inject constructor(
     companion object {
         const val STATUS_SAVED = "saved"
 
-        fun autoPopulateUiState(project: Project, metadata: Metadata?): SettingsUiState {
+        fun autoPopulateUiState(
+            project: Project,
+            metadata: Metadata?,
+            authorProfile: AuthorProfile? = null,
+        ): SettingsUiState {
             val effectiveKeywords = metadata?.keywords
                 ?.takeIf { it.isNotBlank() }
                 ?: project.genre
             val effectiveDescription = metadata?.description
                 ?.takeIf { it.isNotBlank() }
-                ?: project.synopsis
+                ?: project.synopsis.takeIf { it.isNotBlank() }
+                ?: authorProfile?.bio.orEmpty()
             val effectivePublisher = metadata?.publisher
                 ?.takeIf { it.isNotBlank() }
+                ?: authorProfile?.penName
+                    ?.takeIf { it.isNotBlank() }
                 ?: project.authorName
 
             return SettingsUiState(
