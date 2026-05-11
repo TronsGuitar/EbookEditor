@@ -34,6 +34,7 @@ Configure these repository secrets:
 - `SMTP_PORT`
 - `SMTP_USERNAME`
 - `SMTP_PASSWORD`
+- `SMTP_SECURE` (optional, defaults to `true`)
 - `BUILD_EMAIL_TO`
 - `BUILD_EMAIL_FROM`
 
