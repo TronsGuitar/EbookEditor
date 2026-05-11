@@ -1,0 +1,56 @@
+[
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "create_issues",
+        "kind": 2,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "def create_issues(token: str, repo: str) -> None:\n    api_url = f\"https://api.github.com/repos/{repo}/issues\"\n    headers = {\n        \"Authorization\": f\"Bearer {token}\",\n        \"Accept\": \"application/vnd.github.v3+json\",\n    }\n    created = []\n    for issue in ISSUES:\n        resp = requests.post(api_url, headers=headers, json=issue)\n        if resp.status_code == 201:",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "def main() -> None:\n    parser = argparse.ArgumentParser(\n        description=\"Create eBookEditor checklist issues on GitHub.\"\n    )\n    parser.add_argument(\n        \"--token\",\n        required=True,\n        help=\"GitHub personal access token (needs 'repo' scope for classic tokens, or 'issues:write' permission for fine-grained tokens)\",\n    )\n    parser.add_argument(",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    },
+    {
+        "label": "ISSUES",
+        "kind": 5,
+        "importPath": "scripts.create_issues",
+        "description": "scripts.create_issues",
+        "peekOfCode": "ISSUES = [\n    {\n        \"title\": \"1. Project Foundation and Structure\",\n        \"body\": \"\"\"## Overview\nSet up the foundational project structure for the eBookEditor Android app.\n## Tasks\n- [ ] Set up project modules for UI, domain, data, and services (repository pattern recommended)\n- [ ] Define core Gradle dependencies (Room, Retrofit, AndroidX, Jetpack Compose, etc.)\n- [ ] Establish testing frameworks (JUnit, Espresso, MockK)\n## References",
+        "detail": "scripts.create_issues",
+        "documentation": {}
+    }
+]
