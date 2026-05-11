@@ -42,6 +42,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,7 +57,11 @@ import com.tronsguitar.ebookeditor.R
 import com.tronsguitar.ebookeditor.data.local.storage.EbookLocalStorage
 import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 import java.io.InputStream
+import java.util.UUID
 import java.util.zip.ZipInputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Import Screen – DOCX and PDF ingestion with automated semantic analysis.
@@ -72,6 +77,7 @@ fun ImportScreen(
     onImportComplete: (projectId: Long) -> Unit,
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val localStorage = remember(context) { EbookLocalStorage(context) }
     var selectedFormat by rememberSaveable { mutableStateOf(ImportFormat.DOCX) }
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
@@ -186,52 +192,59 @@ fun ImportScreen(
             Button(
                 onClick = {
                     val uri = selectedUri ?: return@Button
-                    isImporting = true
-                    importLogs.clear()
-                    importLogs.add(
-                        ImportUiLog(
-                            type = LogType.INFO,
-                            message = context.getString(R.string.import_log_reading_file),
-                        ),
-                    )
-                    val importedText = runCatching {
-                        context.contentResolver.openInputStream(uri)?.use { input ->
-                            selectedFormat.extractText(input)
-                        }.orEmpty()
-                    }.getOrElse {
+                    coroutineScope.launch {
+                        isImporting = true
+                        importLogs.clear()
                         importLogs.add(
                             ImportUiLog(
-                                type = LogType.WARNING,
-                                message = context.getString(R.string.import_log_read_failed),
+                                type = LogType.INFO,
+                                message = context.getString(R.string.import_log_reading_file),
                             ),
                         )
-                        ""
+                        val selectedFileLabel = selectedFileName
+                        val result = withContext(Dispatchers.IO) {
+                            runCatching {
+                                val importedText = context.contentResolver.openInputStream(uri)?.use { input ->
+                                    selectedFormat.extractText(input)
+                                }.orEmpty()
+                                val normalizedText = importedText.ifBlank {
+                                    context.getString(
+                                        R.string.import_fallback_text_template,
+                                        selectedFileLabel ?: selectedFormat.extension.uppercase(),
+                                    )
+                                }
+                                val projectId = generateProjectId()
+                                val saved = localStorage.save(projectId, normalizedText)
+                                ImportResult(projectId = projectId, saved = saved, hadReadFailure = false)
+                            }.getOrElse {
+                                ImportResult(projectId = null, saved = false, hadReadFailure = true)
+                            }
+                        }
+                        if (result.hadReadFailure) {
+                            importLogs.add(
+                                ImportUiLog(
+                                    type = LogType.WARNING,
+                                    message = context.getString(R.string.import_log_read_failed),
+                                ),
+                            )
+                        } else if (result.saved && result.projectId != null) {
+                            importLogs.add(
+                                ImportUiLog(
+                                    type = LogType.SUCCESS,
+                                    message = context.getString(R.string.import_log_complete),
+                                ),
+                            )
+                            onImportComplete(result.projectId)
+                        } else {
+                            importLogs.add(
+                                ImportUiLog(
+                                    type = LogType.WARNING,
+                                    message = context.getString(R.string.import_log_save_failed),
+                                ),
+                            )
+                        }
+                        isImporting = false
                     }
-                    val projectId = System.currentTimeMillis()
-                    val normalizedText = importedText.ifBlank {
-                        context.getString(
-                            R.string.import_fallback_text_template,
-                            selectedFileName ?: selectedFormat.extension.uppercase(),
-                        )
-                    }
-                    val saveSucceeded = localStorage.save(projectId, normalizedText)
-                    if (saveSucceeded) {
-                        importLogs.add(
-                            ImportUiLog(
-                                type = LogType.SUCCESS,
-                                message = context.getString(R.string.import_log_complete),
-                            ),
-                        )
-                        onImportComplete(projectId)
-                    } else {
-                        importLogs.add(
-                            ImportUiLog(
-                                type = LogType.WARNING,
-                                message = context.getString(R.string.import_log_save_failed),
-                            ),
-                        )
-                    }
-                    isImporting = false
                 },
                 enabled = selectedUri != null && !isImporting,
                 modifier = Modifier.fillMaxWidth(),
@@ -286,6 +299,12 @@ private enum class ImportFormat(
 private data class ImportUiLog(val type: LogType, val message: String)
 
 private enum class LogType { SUCCESS, INFO, WARNING }
+
+private data class ImportResult(
+    val projectId: Long?,
+    val saved: Boolean,
+    val hadReadFailure: Boolean,
+)
 
 @Composable
 private fun FormatCard(
@@ -379,7 +398,7 @@ internal fun extractDocxText(input: InputStream): String {
 
 internal fun extractPdfText(bytes: ByteArray): String {
     val content = bytes.toString(Charsets.ISO_8859_1)
-    val snippets = Regex("""\(([^)]{1,500})\)\s*Tj""")
+    val snippets = Regex("""\(([^)]{1,$MAX_PDF_TEXT_OPERATOR_LENGTH})\)\s*Tj""")
         .findAll(content)
         .map { it.groupValues[1].replace("""\(""", "(").replace("""\)""", ")") }
         .toList()
@@ -389,7 +408,11 @@ internal fun extractPdfText(bytes: ByteArray): String {
     val fallback = content.filter { it.code in 32..126 || it == '\n' }
         .replace(Regex("\\s+"), " ")
         .trim()
-    return if (fallback.length > 4000) fallback.take(4000) else fallback
+    return if (fallback.length > MAX_PDF_FALLBACK_LENGTH) {
+        fallback.take(MAX_PDF_FALLBACK_LENGTH)
+    } else {
+        fallback
+    }
 }
 
 private fun Context.resolveDisplayName(uri: Uri): String? {
@@ -398,6 +421,11 @@ private fun Context.resolveDisplayName(uri: Uri): String? {
         if (index >= 0 && cursor.moveToFirst()) cursor.getString(index) else null
     }
 }
+
+private fun generateProjectId(): Long = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
+
+private const val MAX_PDF_TEXT_OPERATOR_LENGTH = 500
+private const val MAX_PDF_FALLBACK_LENGTH = 4000
 
 @Preview(showBackground = true)
 @Composable
