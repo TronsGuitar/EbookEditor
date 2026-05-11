@@ -277,6 +277,7 @@ def create_issues(token: str, repo: str) -> None:
     created = []
     for issue in ISSUES:
         resp = None
+        request_completed = False
         for attempt in range(1, MAX_RETRIES + 1):
             try:
                 resp = requests.post(
@@ -285,9 +286,13 @@ def create_issues(token: str, repo: str) -> None:
                     json=issue,
                     timeout=REQUEST_TIMEOUT_SECONDS,
                 )
+                request_completed = True
             except requests.RequestException as exc:
                 if attempt == MAX_RETRIES:
-                    print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
+                    print(
+                        f"❌  Failed to create '{issue['title']}': network error – "
+                        f"{_truncate_error_text(str(exc))}"
+                    )
                     break
                 time.sleep(_retry_delay_seconds(attempt))
                 continue
@@ -308,7 +313,7 @@ def create_issues(token: str, repo: str) -> None:
                 continue
             break
 
-        if resp is None:
+        if not request_completed or resp is None:
             continue
 
         if resp.status_code == 201:
