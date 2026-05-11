@@ -49,8 +49,7 @@ RUN yes | sdkmanager --licenses > /dev/null 2>&1 \
         "build-tools;35.0.0"
 
 # ── Entrypoint ────────────────────────────────────────────────────────────────
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 WORKDIR /project
 
