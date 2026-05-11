@@ -23,7 +23,7 @@ data class SettingsUiState(
     val synopsis: String = "",
     val hasAiDisclosure: Boolean = false,
     val subtitle: String = "",
-    val language: String = "en",
+    val language: String = SettingsViewModel.DEFAULT_LANGUAGE,
     val isbn: String = "",
     val keywords: String = "",
     val description: String = "",
@@ -142,7 +142,7 @@ class SettingsViewModel @Inject constructor(
                     id = currentMetadataId ?: 0L,
                     projectId = updatedProject.id,
                     subtitle = draft.subtitle.trim(),
-                    language = draft.language.trim().ifBlank { "en" },
+                    language = draft.language.trim().ifBlank { DEFAULT_LANGUAGE },
                     isbn = draft.isbn.trim(),
                     keywords = draft.keywords.trim(),
                     description = draft.description.trim(),
@@ -168,6 +168,7 @@ class SettingsViewModel @Inject constructor(
 
     companion object {
         const val STATUS_SAVED = "saved"
+        const val DEFAULT_LANGUAGE = "en"
 
         fun autoPopulateUiState(project: Project, metadata: Metadata?): SettingsUiState {
             val effectiveKeywords = metadata?.keywords
@@ -188,7 +189,7 @@ class SettingsViewModel @Inject constructor(
                 synopsis = project.synopsis,
                 hasAiDisclosure = project.hasAiDisclosure,
                 subtitle = metadata?.subtitle.orEmpty(),
-                language = metadata?.language ?: "en",
+                language = metadata?.language ?: DEFAULT_LANGUAGE,
                 isbn = metadata?.isbn.orEmpty(),
                 keywords = effectiveKeywords,
                 description = effectiveDescription,

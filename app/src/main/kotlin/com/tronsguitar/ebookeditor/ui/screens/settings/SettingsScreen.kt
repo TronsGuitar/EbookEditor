@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,11 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tronsguitar.ebookeditor.R
-import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 
 /**
  * Settings Screen – Project metadata, author profile, and AI disclosure configuration.
@@ -190,21 +187,5 @@ private fun EmptySettingsState(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = stringResource(R.string.settings_no_project_message))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SettingsScreenPreview() {
-    EbookEditorTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-        ) {
-            Text(text = stringResource(R.string.settings_placeholder))
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = stringResource(R.string.settings_saved_message))
-        }
     }
 }
