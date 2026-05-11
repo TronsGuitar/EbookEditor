@@ -50,13 +50,14 @@ import com.tronsguitar.ebookeditor.ui.theme.EbookEditorTheme
 fun EditorScreen(
     projectId: Long,
     onNavigateBack: () -> Unit,
+    storage: EbookLocalStorage? = null,
 ) {
     val context = LocalContext.current
-    val storage = remember(context) { EbookLocalStorage(context) }
+    val localStorage = storage ?: remember(context) { EbookLocalStorage(context) }
     var manuscriptContent by rememberSaveable(projectId) { mutableStateOf("") }
 
     LaunchedEffect(projectId) {
-        manuscriptContent = storage.read(projectId).orEmpty()
+        manuscriptContent = localStorage.read(projectId).orEmpty()
     }
 
     Scaffold(
@@ -119,17 +120,14 @@ fun EditorScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(
                         onClick = {
-                            val created = storage.create(projectId, manuscriptContent)
-                            if (!created) {
-                                storage.update(projectId, manuscriptContent)
-                            }
+                            localStorage.save(projectId, manuscriptContent)
                         },
                     ) {
                         Text(text = stringResource(R.string.editor_save_button))
                     }
                     Button(
                         onClick = {
-                            storage.delete(projectId)
+                            localStorage.delete(projectId)
                             manuscriptContent = ""
                         },
                     ) {

@@ -8,16 +8,9 @@ import android.content.Context
 class EbookLocalStorage(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    fun create(projectId: Long, content: String): Boolean {
-        val key = keyFor(projectId)
-        if (prefs.contains(key)) return false
-        prefs.edit().putString(key, content).apply()
-        return true
-    }
-
     fun read(projectId: Long): String? = prefs.getString(keyFor(projectId), null)
 
-    fun update(projectId: Long, content: String) {
+    fun save(projectId: Long, content: String) {
         prefs.edit().putString(keyFor(projectId), content).apply()
     }
 
