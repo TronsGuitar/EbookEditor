@@ -1,7 +1,7 @@
 package com.tronsguitar.ebookeditor
 
 import com.tronsguitar.ebookeditor.ui.screens.importmanuscript.extractDocxText
-import com.tronsguitar.ebookeditor.ui.screens.importmanuscript.extractPdfText
+import com.tronsguitar.ebookeditor.ui.screens.importmanuscript.extractPdfTextFromBytes
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -34,7 +34,7 @@ class ImportParsersTest {
     fun `extractPdfText extracts simple text operators`() {
         val pdfContent = "BT (Hello PDF) Tj ET".toByteArray(Charsets.ISO_8859_1)
 
-        val extracted = extractPdfText(pdfContent)
+        val extracted = extractPdfTextFromBytes(pdfContent)
 
         assertEquals("Hello PDF", extracted)
     }
@@ -43,7 +43,7 @@ class ImportParsersTest {
     fun `extractPdfText falls back to printable ascii when no operators found`() {
         val binaryLikeContent = "manuscript preview body".toByteArray(Charsets.ISO_8859_1)
 
-        val extracted = extractPdfText(binaryLikeContent)
+        val extracted = extractPdfTextFromBytes(binaryLikeContent)
 
         assertTrue(extracted.contains("manuscript preview body"))
     }

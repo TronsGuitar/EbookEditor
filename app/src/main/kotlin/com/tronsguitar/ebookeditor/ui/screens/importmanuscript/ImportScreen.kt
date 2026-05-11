@@ -370,7 +370,7 @@ private fun LogRow(entry: ImportUiLog) {
 
 private fun ImportFormat.extractText(input: InputStream): String = when (this) {
     ImportFormat.DOCX -> extractDocxText(input)
-    ImportFormat.PDF -> extractPdfText(input)
+    ImportFormat.PDF -> extractPdfTextFromStream(input)
 }
 
 internal fun extractDocxText(input: InputStream): String {
@@ -397,7 +397,7 @@ internal fun extractDocxText(input: InputStream): String {
     return ""
 }
 
-internal fun extractPdfText(bytes: ByteArray): String {
+internal fun extractPdfTextFromBytes(bytes: ByteArray): String {
     val content = bytes.toString(Charsets.ISO_8859_1)
     val snippets = PDF_TEXT_OPERATOR_REGEX
         .findAll(content)
@@ -416,9 +416,9 @@ internal fun extractPdfText(bytes: ByteArray): String {
     }
 }
 
-internal fun extractPdfText(input: InputStream): String {
+internal fun extractPdfTextFromStream(input: InputStream): String {
     val bytes = input.readNBytes(MAX_PDF_INPUT_BYTES)
-    return extractPdfText(bytes)
+    return extractPdfTextFromBytes(bytes)
 }
 
 private fun Context.resolveDisplayName(uri: Uri): String? {
@@ -435,8 +435,11 @@ private fun generateProjectId(): Long {
     return ((timestampPart shl PROJECT_ID_COUNTER_BITS) or sequencePart xor randomPart) and Long.MAX_VALUE
 }
 
+// Keep operator capture bounded to prevent huge matches from malformed PDFs.
 private const val MAX_PDF_TEXT_OPERATOR_LENGTH = 500
+// Limit fallback extraction text so import logs/storage remain lightweight.
 private const val MAX_PDF_FALLBACK_LENGTH = 4000
+// Read at most 1 MB from PDFs for lightweight on-device parsing.
 private const val MAX_PDF_INPUT_BYTES = 1_048_576
 private const val PROJECT_ID_COUNTER_BITS = 10
 private const val PROJECT_ID_COUNTER_MASK = (1L shl PROJECT_ID_COUNTER_BITS) - 1
