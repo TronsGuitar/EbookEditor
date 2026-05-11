@@ -31,6 +31,10 @@ def _retry_backoff_seconds(attempt: int) -> int:
     return 2 ** (attempt - 1)
 
 
+def _retry_delay_seconds(attempt: int) -> int:
+    return max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)
+
+
 def _retry_after_seconds(retry_after_value: str | None, fallback_seconds: int) -> int:
     minimum_delay = max(fallback_seconds, MIN_RETRY_DELAY_SECONDS)
     if retry_after_value is None:
@@ -279,9 +283,7 @@ def create_issues(token: str, repo: str) -> None:
                 if attempt == MAX_RETRIES:
                     print(f"❌  Failed to create '{issue['title']}': network error – {exc}")
                     break
-                time.sleep(
-                    max(_retry_backoff_seconds(attempt), MIN_RETRY_DELAY_SECONDS)
-                )
+                time.sleep(_retry_delay_seconds(attempt))
                 continue
 
             if resp.status_code in (429, 500, 502, 503, 504):
@@ -293,7 +295,7 @@ def create_issues(token: str, repo: str) -> None:
                     break
                 retry_after = _retry_after_seconds(
                     retry_after_value=resp.headers.get("Retry-After"),
-                    fallback_seconds=_retry_backoff_seconds(attempt),
+                    fallback_seconds=_retry_delay_seconds(attempt),
                 )
                 time.sleep(max(retry_after, MIN_RETRY_DELAY_SECONDS))
                 continue
