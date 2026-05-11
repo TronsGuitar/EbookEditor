@@ -10,11 +10,13 @@ class EbookLocalStorage(context: Context) {
 
     fun read(projectId: Long): String? = prefs.getString(keyFor(projectId), null)
 
-    fun save(projectId: Long, content: String): Boolean =
-        prefs.edit().putString(keyFor(projectId), content).commit()
+    fun save(projectId: Long, content: String) {
+        prefs.edit().putString(keyFor(projectId), content).apply()
+    }
 
-    fun delete(projectId: Long): Boolean =
-        prefs.edit().remove(keyFor(projectId)).commit()
+    fun delete(projectId: Long) {
+        prefs.edit().remove(keyFor(projectId)).apply()
+    }
 
     private fun keyFor(projectId: Long): String = "ebook_content_$projectId"
 
